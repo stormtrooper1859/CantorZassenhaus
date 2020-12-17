@@ -1,16 +1,48 @@
-﻿#include <iostream>
+#include "CantorZassenhaus.h"
 
-#include "mpirxx.h"
 
-int main()
-{
-	mpz_class a, b, c;
-	a = 1234;
-	b = "99999999999999999999999999999999999999978";
-	c = a + b;
-	std::cout << c << "\n";
-	return 0;
+using namespace std;
+
+using resultT = std::vector<std::pair<Polynomial, int>>;
+
+resultT square_free_decomposition(Polynomial poly, int modp) {
+	resultT result();
+
+
+
+
+	return resultT();
 }
 
-// Запуск программы: CTRL+F5 или меню "Отладка" > "Запуск без отладки"
-// Отладка программы: F5 или меню "Отладка" > "Запустить отладку"
+
+
+vector<pair<Polynomial, int>> distinct_degree_factorization(Polynomial poly, int modp) {
+	return vector<pair<Polynomial, int>>();
+}
+
+
+vector<Polynomial> equal_degree_factorization(Polynomial poly, int degree, int modp) {
+	return vector<Polynomial>();
+}
+
+
+
+vector<Polynomial> factor_square_free(Polynomial poly, int modp) {
+	return vector<Polynomial>();
+}
+
+
+
+resultT factor(Polynomial poly, int modp) {
+	resultT result();
+
+	resultT sqrfree = square_free_decomposition(poly, modp);
+	
+	for (auto const& value : sqrfree) {
+		
+	}
+
+
+
+	return std::vector<std::pair<Polynomial, int>>();
+}
