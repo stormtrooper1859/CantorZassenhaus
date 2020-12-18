@@ -5,6 +5,8 @@ VisualStudioVersion = 15.0.28307.1321
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "CantorZassenhaus", "CantorZassenhaus\CantorZassenhaus.vcxproj", "{593D51EB-B346-4854-A75B-980E5FE98792}"
 EndProject
+Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "CantorZassenhausTests", "CantorZassenhausTests\CantorZassenhausTests.vcxproj", "{FF1CFCAC-03A3-445B-A2FA-2D06507D25E2}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|x64 = Debug|x64
@@ -21,6 +23,14 @@ Global
 		{593D51EB-B346-4854-A75B-980E5FE98792}.Release|x64.Build.0 = Release|x64
 		{593D51EB-B346-4854-A75B-980E5FE98792}.Release|x86.ActiveCfg = Release|Win32
 		{593D51EB-B346-4854-A75B-980E5FE98792}.Release|x86.Build.0 = Release|Win32
+		{FF1CFCAC-03A3-445B-A2FA-2D06507D25E2}.Debug|x64.ActiveCfg = Debug|x64
+		{FF1CFCAC-03A3-445B-A2FA-2D06507D25E2}.Debug|x64.Build.0 = Debug|x64
+		{FF1CFCAC-03A3-445B-A2FA-2D06507D25E2}.Debug|x86.ActiveCfg = Debug|Win32
+		{FF1CFCAC-03A3-445B-A2FA-2D06507D25E2}.Debug|x86.Build.0 = Debug|Win32
+		{FF1CFCAC-03A3-445B-A2FA-2D06507D25E2}.Release|x64.ActiveCfg = Release|x64
+		{FF1CFCAC-03A3-445B-A2FA-2D06507D25E2}.Release|x64.Build.0 = Release|x64
+		{FF1CFCAC-03A3-445B-A2FA-2D06507D25E2}.Release|x86.ActiveCfg = Release|Win32
+		{FF1CFCAC-03A3-445B-A2FA-2D06507D25E2}.Release|x86.Build.0 = Release|Win32
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
