@@ -1,7 +1,36 @@
 #include "CantorZassenhaus.h"
 
+#include <algorithm>
+#include <chrono>
+#include <random>
 
 using namespace std;
+
+Polynomial get_random_polynomial(int max_degree, int modq) {
+    std::mt19937 rng(std::chrono::steady_clock::now().time_since_epoch().count());
+
+    uniform_int_distribution<int> dist(0, modq - 1);
+    uniform_int_distribution<int> dist_degree(0, max_degree - 1);
+
+    auto degree = dist_degree(rng) + 1;
+    
+    std::vector<int64_t> vr(degree + 1);
+    vr[0] = 1;
+
+    for (size_t i = 1; i < degree + 1; i++)
+    {
+        vr[i] = dist(rng);
+    }
+
+    Polynomial result(vr);
+
+    return result;
+}
+
+
+
+
+
 
 using resultT = std::vector<std::pair<Polynomial, int>>;
 

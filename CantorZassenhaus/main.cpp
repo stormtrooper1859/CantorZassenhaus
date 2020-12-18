@@ -24,6 +24,8 @@ int main()
 #include <cstdint>
 
 #include "Polynomial.h"
+#include "CantorZassenhaus.h"
+
 
 using namespace std;
 
@@ -88,7 +90,7 @@ int main5() {
     return 0;
 }
 
-int main() {
+int main6() {
     Polynomial p1 = Polynomial({ 2, 1, 2, 2, 2, 0, 0, 2 });
     Polynomial p2 = Polynomial({ 2, 0, 1, 1 });
 
@@ -98,6 +100,17 @@ int main() {
     Polynomial p3 = div(p1, p2, 3);
 
     cout << p3 << "\n";
+
+    return 0;
+}
+
+int main() {
+
+    for (size_t i = 0; i < 10; i++)
+    {
+        Polynomial poly = get_random_polynomial(5, 3);
+        cout << poly << "\n";
+    }
 
     return 0;
 }
