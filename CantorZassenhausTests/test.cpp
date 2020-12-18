@@ -1,4 +1,4 @@
-#include "pch.h"
+#include "gtest/gtest.h"
 
 #include <cstdlib>
 #include <iostream>
@@ -6,8 +6,7 @@
 #include <cstdint>
 
 #include <string>
-//#include "Polynomial.h"
-#include "..\CantorZassenhaus\CantorZassenhaus.h"
+#include "Polynomial.h"
 
 TEST(Polynomial, div1) {
     Polynomial p1 = Polynomial({ 2, 1, 2, 2, 2, 0, 0, 2 });

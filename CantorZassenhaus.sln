@@ -7,6 +7,8 @@ Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "CantorZassenhaus", "CantorZ
 EndProject
 Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "CantorZassenhausTests", "CantorZassenhausTests\CantorZassenhausTests.vcxproj", "{FF1CFCAC-03A3-445B-A2FA-2D06507D25E2}"
 EndProject
+Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "CantorZassenhausLib", "CantorZassenhausLib\CantorZassenhausLib.vcxproj", "{6DFF9434-60B6-4B1F-95A6-BD4042229C25}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|x64 = Debug|x64
@@ -31,6 +33,14 @@ Global
 		{FF1CFCAC-03A3-445B-A2FA-2D06507D25E2}.Release|x64.Build.0 = Release|x64
 		{FF1CFCAC-03A3-445B-A2FA-2D06507D25E2}.Release|x86.ActiveCfg = Release|Win32
 		{FF1CFCAC-03A3-445B-A2FA-2D06507D25E2}.Release|x86.Build.0 = Release|Win32
+		{6DFF9434-60B6-4B1F-95A6-BD4042229C25}.Debug|x64.ActiveCfg = Debug|x64
+		{6DFF9434-60B6-4B1F-95A6-BD4042229C25}.Debug|x64.Build.0 = Debug|x64
+		{6DFF9434-60B6-4B1F-95A6-BD4042229C25}.Debug|x86.ActiveCfg = Debug|Win32
+		{6DFF9434-60B6-4B1F-95A6-BD4042229C25}.Debug|x86.Build.0 = Debug|Win32
+		{6DFF9434-60B6-4B1F-95A6-BD4042229C25}.Release|x64.ActiveCfg = Release|x64
+		{6DFF9434-60B6-4B1F-95A6-BD4042229C25}.Release|x64.Build.0 = Release|x64
+		{6DFF9434-60B6-4B1F-95A6-BD4042229C25}.Release|x86.ActiveCfg = Release|Win32
+		{6DFF9434-60B6-4B1F-95A6-BD4042229C25}.Release|x86.Build.0 = Release|Win32
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

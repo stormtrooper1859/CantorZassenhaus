@@ -9,9 +9,9 @@
 class Polynomial
 {
 public:
-	std::vector<int64_t> coeff;
+    std::vector<int64_t> coeff;
 
-	Polynomial() {}
+    Polynomial() {}
 
     Polynomial(std::vector<int64_t> coeff) : coeff(coeff) {};
 
@@ -21,7 +21,7 @@ public:
 
     int64_t get_degree() const;
 
-	std::string to_string(std::string default_variable_name = "x") const;
+    std::string to_string(std::string default_variable_name = "x") const;
 };
 
 

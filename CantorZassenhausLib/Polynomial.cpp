@@ -5,7 +5,7 @@
 
 
 int degPoly(const Polynomial& a) {
-	return a.coeff.size() - 1;
+    return a.coeff.size() - 1;
 }
 
 
@@ -18,32 +18,32 @@ int64_t Polynomial::get_degree() const
 
 std::string Polynomial::to_string(std::string default_variable_name) const
 {
-	int degree = this->coeff.size() - 1;
-	std::string result = "";
+    int degree = this->coeff.size() - 1;
+    std::string result = "";
 
-	for (size_t i = 0; i <= degree; i++)
-	{
-		if (this->coeff[i] == 0) continue;
-		if (!result.empty()) {
-			result += "+";
-		}
+    for (size_t i = 0; i <= degree; i++)
+    {
+        if (this->coeff[i] == 0) continue;
+        if (!result.empty()) {
+            result += "+";
+        }
 
-		if (this->coeff[i] != 1 || degree - i == 0) {
-			result += std::to_string(this->coeff[i]);
-		}
-		if (degree - i != 0) {
-			result += default_variable_name;
-			if (degree - i != 1) {
-				result += "^" + std::to_string(degree - i);
-			}
-		}
-	}
+        if (this->coeff[i] != 1 || degree - i == 0) {
+            result += std::to_string(this->coeff[i]);
+        }
+        if (degree - i != 0) {
+            result += default_variable_name;
+            if (degree - i != 1) {
+                result += "^" + std::to_string(degree - i);
+            }
+        }
+    }
 
-	return result;
+    return result;
 }
 
 std::ostream& operator<<(std::ostream& strm, const Polynomial& poly) {
-	return strm << poly.to_string();
+    return strm << poly.to_string();
 }
 
 
@@ -65,7 +65,8 @@ Polynomial add(const Polynomial & a, const Polynomial & b, const int64_t modp)
     {
         if (modp == -1) {
             v[diff + i] = (v[diff + i] + b1.coeff[i]);
-        } else {
+        }
+        else {
             v[diff + i] = (v[diff + i] + b1.coeff[i]) % modp;
         }
     }
@@ -91,7 +92,8 @@ Polynomial mul(const Polynomial & a, const Polynomial & b, const int64_t modp)
         for (int j = 0; j <= degPoly(b); ++j) {
             if (modp == -1) {
                 v[i + j] = (v[i + j] + a.coeff[i] * b.coeff[j]);
-            } else {
+            }
+            else {
                 v[i + j] = (v[i + j] + a.coeff[i] * b.coeff[j]) % modp;
             }
         }
@@ -155,7 +157,7 @@ Polynomial div(const Polynomial & a, const Polynomial & b, const int64_t modp)
         }
     }
 
-    return mul(Polynomial(coeff_result), Polynomial({bl}), modp);
+    return mul(Polynomial(coeff_result), Polynomial({ bl }), modp);
 }
 
 bool operator==(const Polynomial & poly1, const Polynomial & poly2)
