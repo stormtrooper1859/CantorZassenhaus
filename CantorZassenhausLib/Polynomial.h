@@ -38,6 +38,6 @@ Polynomial sub(const Polynomial& a, const Polynomial& b, const int64_t modp = -1
 
 Polynomial mul(const Polynomial& a, const Polynomial& b, const int64_t modp = -1);
 
-Polynomial div(const Polynomial& a, const Polynomial& b, const int64_t modp);
+std::pair<Polynomial, Polynomial> div(const Polynomial& a, const Polynomial& b, const int64_t modp);
 
 bool operator== (const Polynomial &poly1, const Polynomial &poly2);

@@ -10,6 +10,18 @@ int degPoly(const Polynomial& a) {
 
 
 
+std::vector<int64_t> prune(std::vector<int64_t>& v) {
+    std::vector<int64_t> vr;
+
+    int i = 0;
+    for (i = 0; i < v.size() && v[i] == 0; i++);
+    for (; i < v.size(); i++) {
+        vr.push_back(v[i]);
+    }
+
+    return vr;
+}
+
 
 int64_t Polynomial::get_degree() const
 {
@@ -71,16 +83,17 @@ Polynomial add(const Polynomial & a, const Polynomial & b, const int64_t modp)
         }
     }
 
-    std::vector<int64_t> vr;
+    //std::vector<int64_t> vr;
 
-    int i = 0;
-    for (i = 0; i < v.size() && v[i] == 0; i++);
-    for (; i < v.size(); i++) {
-        vr.push_back(v[i]);
-    }
+    //int i = 0;
+    //for (i = 0; i < v.size() && v[i] == 0; i++);
+    //for (; i < v.size(); i++) {
+        //vr.push_back(v[i]);
+    //}
 
     Polynomial p = Polynomial();
-    p.coeff = vr;
+    //p.coeff = vr;
+    p.coeff = prune(v);
     return p;
 }
 
@@ -130,7 +143,7 @@ int64_t inversed(int64_t a, int64_t modp) {
 
 
 
-Polynomial div(const Polynomial & a, const Polynomial & b, const int64_t modp)
+std::pair< Polynomial, Polynomial> div(const Polynomial & a, const Polynomial & b, const int64_t modp)
 {
     int64_t bl = b.coeff[0];
     int64_t ib = inversed(bl, modp);
@@ -157,7 +170,10 @@ Polynomial div(const Polynomial & a, const Polynomial & b, const int64_t modp)
         }
     }
 
-    return mul(Polynomial(coeff_result), Polynomial({ bl }), modp);
+    Polynomial quo = mul(Polynomial(coeff_result), Polynomial({ bl }), modp);
+    Polynomial rem(prune(at.coeff));
+
+    return { quo, rem };
 }
 
 bool operator==(const Polynomial & poly1, const Polynomial & poly2)

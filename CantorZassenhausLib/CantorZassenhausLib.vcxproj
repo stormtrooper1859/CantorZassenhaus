@@ -155,12 +155,12 @@
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
-    <ClInclude Include="framework.h" />
-    <ClInclude Include="Poly.h" />
+    <ClInclude Include="CantorZassenhaus.h" />
+    <ClInclude Include="Polynomial.h" />
   </ItemGroup>
   <ItemGroup>
-    <ClCompile Include="CantorZassenhausLib.cpp" />
-    <ClCompile Include="Poly.cpp" />
+    <ClCompile Include="CantorZassenhaus.cpp" />
+    <ClCompile Include="Polynomial.cpp" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">

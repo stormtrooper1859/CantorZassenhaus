@@ -157,11 +157,7 @@
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
-    <ClCompile Include="CantorZassenhaus.cpp" />
     <ClCompile Include="main.cpp" />
-  </ItemGroup>
-  <ItemGroup>
-    <ClInclude Include="CantorZassenhaus.h" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\CantorZassenhausLib\CantorZassenhausLib.vcxproj">

@@ -61,50 +61,22 @@ int main4() {
 	return 0;
 }
 
-
-
-int main3() {
-	using namespace std;
-
-	vector<int> v1 = { 1, 3, 6 };
-	vector<int> v2 = { 1, 2, 6 };
-
-	bool rez = v1 == v2;
-
-	cout << rez << "\n";
-
-    return 0;
-}
-
-int main5() {
-    Polynomial p1 = Polynomial({ 1, 0, 1, 0, 0, 2 });
-    Polynomial p2 = Polynomial({ 1, 1 });
-
-    cout << p1 << "\n";
-    cout << p2 << "\n";
-
-    Polynomial p3 = div(p1, p2, 3);
-
-    cout << p3 << "\n";
-
-    return 0;
-}
-
-int main6() {
-    Polynomial p1 = Polynomial({ 2, 1, 2, 2, 2, 0, 0, 2 });
+int main() {
+    Polynomial p1 = Polynomial({ 2, 1, 2, 2, 2, 0, 0, 0 });
     Polynomial p2 = Polynomial({ 2, 0, 1, 1 });
 
     cout << p1 << "\n";
     cout << p2 << "\n";
 
-    Polynomial p3 = div(p1, p2, 3);
+    auto p3div = div(p1, p2, 3);
 
-    cout << p3 << "\n";
+    cout << p3div.first << "\n";
+    cout << p3div.second << "\n";
 
     return 0;
 }
 
-int main() {
+int main7() {
 
     for (size_t i = 0; i < 10; i++)
     {
