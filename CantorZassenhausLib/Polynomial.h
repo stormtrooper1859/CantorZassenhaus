@@ -41,3 +41,8 @@ Polynomial mul(const Polynomial& a, const Polynomial& b, const int64_t modp = -1
 std::pair<Polynomial, Polynomial> div(const Polynomial& a, const Polynomial& b, const int64_t modp);
 
 bool operator== (const Polynomial &poly1, const Polynomial &poly2);
+
+Polynomial parse_polynomial(std::string s);
+
+
+std::vector<std::string> split_by(std::string s, std::string delimiter);

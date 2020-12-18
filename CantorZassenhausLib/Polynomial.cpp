@@ -3,10 +3,59 @@
 #include <string>
 #include <algorithm>
 
+using namespace std;
+
 
 int degPoly(const Polynomial& a) {
     return a.coeff.size() - 1;
 }
+
+
+
+std::vector<std::string> split_by(std::string s, std::string delimiter) {
+    vector<string> result;
+    /*
+    size_t pos = 0;
+    std::string token;
+    while ((pos = s.find(delimiter)) != std::string::npos) {
+        token = s.substr(0, pos);
+        result.push_back(token);
+        s.erase(0, pos + delimiter.length());
+    }
+    result.push_back(token);
+
+    return result;
+    */
+    auto start = 0U;
+    auto end = s.find(delimiter);
+    while (end != std::string::npos)
+    {
+        result.push_back(s.substr(start, end - start));
+        start = end + delimiter.length();
+        end = s.find(delimiter, start);
+    }
+
+    result.push_back(s.substr(start, end));
+
+    return result;
+}
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 
 
@@ -20,6 +69,28 @@ std::vector<int64_t> prune(std::vector<int64_t>& v) {
     }
 
     return vr;
+}
+
+
+Polynomial parse_polynomial(std::string str)
+{
+    auto monoms_string = split_by(str, "+");
+    vector<pair<int, int>> monoms(monoms_string.size());
+
+    for (size_t i = 0; i < monoms.size(); i++)
+    {
+        auto ss = split_by(monoms_string[i], "x^");
+        monoms[i] = { stoi(ss[0]), stoi(ss[1]) };
+    }
+
+    int pwr = monoms[0].second;
+    vector<int64_t> result(monoms[0].second + 1);
+
+    for (auto pr : monoms) {
+        result[pwr - pr.second] = pr.first;
+    }
+
+    return Polynomial(result);
 }
 
 

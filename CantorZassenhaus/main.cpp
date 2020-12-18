@@ -61,7 +61,7 @@ int main4() {
 	return 0;
 }
 
-int main() {
+int main6() {
     Polynomial p1 = Polynomial({ 2, 1, 2, 2, 2, 0, 0, 0 });
     Polynomial p2 = Polynomial({ 2, 0, 1, 1 });
 
@@ -86,3 +86,29 @@ int main7() {
 
     return 0;
 }
+
+int main8() {
+    string s = "3x^5+x^4+2x^3+4x^2+2x+2";
+    auto r = split_by(s, "+");
+
+    for (auto ss : r) {
+        cout << ss << "\n";
+    }
+
+    return 0;
+}
+
+int main() {
+    auto p = parse_polynomial("3x^5+1x^4+2x^3+4x^2+2x^1+2x^0");
+
+    cout << p << "\n";
+
+    return 0;
+}
+
+
+//Polynomial p1 = Polynomial({ 1, 4, 6, 3 });
+//Polynomial p2 = Polynomial({ 6, 3, 2, 1 });
+//Polynomial p1 = Polynomial({ 2, 1, 2, 2, 2, 0, 0, 2 });
+//Polynomial p2 = Polynomial({ 2, 0, 1, 1 });
+
