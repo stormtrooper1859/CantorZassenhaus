@@ -3,49 +3,9 @@
 #include <string>
 #include <algorithm>
 
+#include "Utils.h"
+
 using namespace std;
-
-
-int degPoly(const Polynomial& a) {
-    return a.coeff.size() - 1;
-}
-
-
-
-std::vector<std::string> split_by(std::string s, std::string delimiter) {
-    vector<string> result;
-    /*
-    size_t pos = 0;
-    std::string token;
-    while ((pos = s.find(delimiter)) != std::string::npos) {
-        token = s.substr(0, pos);
-        result.push_back(token);
-        s.erase(0, pos + delimiter.length());
-    }
-    result.push_back(token);
-
-    return result;
-    */
-    auto start = 0U;
-    auto end = s.find(delimiter);
-    while (end != std::string::npos)
-    {
-        result.push_back(s.substr(start, end - start));
-        start = end + delimiter.length();
-        end = s.find(delimiter, start);
-    }
-
-    result.push_back(s.substr(start, end));
-
-    return result;
-}
-
-
-
-
-
-
-
 
 
 
@@ -99,6 +59,8 @@ int64_t Polynomial::get_degree() const
     return this->coeff.size() - 1;
 }
 
+
+
 std::string Polynomial::to_string(std::string default_variable_name) const
 {
     int degree = this->coeff.size() - 1;
@@ -125,6 +87,8 @@ std::string Polynomial::to_string(std::string default_variable_name) const
     return result;
 }
 
+
+
 std::ostream& operator<<(std::ostream& strm, const Polynomial& poly) {
     return strm << poly.to_string();
 }
@@ -133,18 +97,18 @@ std::ostream& operator<<(std::ostream& strm, const Polynomial& poly) {
 
 
 
-Polynomial add(const Polynomial & a, const Polynomial & b, const int64_t modp)
+Polynomial Polynomial::add(const Polynomial & a, const Polynomial & b, const int64_t modp)
 {
     std::vector<int64_t> v(std::max(a.coeff.size(), b.coeff.size()));
 
-    const Polynomial& a1 = degPoly(a) > degPoly(b) ? a : b;
-    const Polynomial& b1 = degPoly(a) > degPoly(b) ? b : a;
+    const Polynomial& a1 = a.get_degree() > b.get_degree() ? a : b;
+    const Polynomial& b1 = a.get_degree() > b.get_degree() ? b : a;
 
     std::copy(a1.coeff.begin(), a1.coeff.end(), v.begin());
 
-    size_t diff = degPoly(a1) - degPoly(b1);
+    size_t diff = a1.get_degree() - b1.get_degree();
 
-    for (int i = degPoly(b1); i >= 0; i--)
+    for (int i = b1.get_degree(); i >= 0; i--)
     {
         if (modp == -1) {
             v[diff + i] = (v[diff + i] + b1.coeff[i]);
@@ -169,11 +133,11 @@ Polynomial add(const Polynomial & a, const Polynomial & b, const int64_t modp)
 }
 
 
-Polynomial mul(const Polynomial & a, const Polynomial & b, const int64_t modp)
+Polynomial Polynomial::mul(const Polynomial & a, const Polynomial & b, const int64_t modp)
 {
-    std::vector<int64_t> v(degPoly(a) + degPoly(b) + 1);
-    for (int i = 0; i <= degPoly(a); ++i) {
-        for (int j = 0; j <= degPoly(b); ++j) {
+    std::vector<int64_t> v(a.get_degree() + b.get_degree() + 1);
+    for (int i = 0; i <= a.get_degree(); ++i) {
+        for (int j = 0; j <= b.get_degree(); ++j) {
             if (modp == -1) {
                 v[i + j] = (v[i + j] + a.coeff[i] * b.coeff[j]);
             }
@@ -188,7 +152,7 @@ Polynomial mul(const Polynomial & a, const Polynomial & b, const int64_t modp)
 }
 
 
-Polynomial sub(const Polynomial & a, const Polynomial & b, const int64_t modp)
+Polynomial Polynomial::sub(const Polynomial & a, const Polynomial & b, const int64_t modp)
 {
     return add(a, mul(b, Polynomial({ -1 })), modp);
 }
@@ -214,7 +178,7 @@ int64_t inversed(int64_t a, int64_t modp) {
 
 
 
-std::pair< Polynomial, Polynomial> div(const Polynomial & a, const Polynomial & b, const int64_t modp)
+std::pair< Polynomial, Polynomial> Polynomial::div(const Polynomial & a, const Polynomial & b, const int64_t modp)
 {
     int64_t bl = b.coeff[0];
     int64_t ib = inversed(bl, modp);

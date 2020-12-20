@@ -25,6 +25,7 @@ int main()
 
 #include "Polynomial.h"
 #include "CantorZassenhaus.h"
+#include "Utils.h"
 
 
 using namespace std;
@@ -34,27 +35,25 @@ int main4() {
 	std::vector<int64_t> v1({ 2, 1, 3, 1 });
 	std::vector<int64_t> v2({ 4, 1, 2 });
 
-	Polynomial p1 = Polynomial();
-	p1.coeff = v1;
-	Polynomial p2 = Polynomial();
-	p2.coeff = v2;
+	Polynomial p1 = Polynomial(v1);
+	Polynomial p2 = Polynomial(v2);
 
 
     cout << "p1: " << p1 << "\n";
 
 
-	Polynomial p3 = mul(p1, p2, 5);
+	Polynomial p3 = Polynomial::mul(p1, p2, 5);
 
-	for (auto t : p3.coeff) {
-		cout << t << " ";
-	}
+	//for (auto t : p3.coeff) {
+//		cout << t << " ";
+//	}
 	cout << "\n";
 
 	cout << p1 << "\n";
 	cout << p2.to_string("y") << "\n";
 	cout << p3 << "\n";
 
-    Polynomial p4 = add(p1, p2);
+    Polynomial p4 = Polynomial::add(p1, p2);
 
 	cout << p4 << "\n";
 
@@ -68,7 +67,7 @@ int main6() {
     cout << p1 << "\n";
     cout << p2 << "\n";
 
-    auto p3div = div(p1, p2, 3);
+    auto p3div = Polynomial::div(p1, p2, 3);
 
     cout << p3div.first << "\n";
     cout << p3div.second << "\n";

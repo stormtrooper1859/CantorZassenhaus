@@ -3,6 +3,7 @@
 #include <string>
 #include "Polynomial.h"
 
+
 TEST(Polynomial, to_string) {
     Polynomial p1 = parse_polynomial("2x^5+3x^4+1x^2+2x^0");
 
@@ -15,7 +16,7 @@ TEST(Polynomial, div1) {
     Polynomial p1 = parse_polynomial("2x^7+1x^6+2x^5+2x^4+2x^3+2x^0");
     Polynomial p2 = parse_polynomial("2x^3+1x^1+1x^0");
 
-    auto p3div = div(p1, p2, 3);
+    auto p3div = Polynomial::div(p1, p2, 3);
 
     std::string result = "x^4+2x^3+2x^2+x+2";
 
@@ -26,7 +27,7 @@ TEST(Polynomial, div2) {
     Polynomial p1 = parse_polynomial("1x^5+1x^3+2x^0");
     Polynomial p2 = parse_polynomial("1x^1+1x^0");
 
-    auto p3div = div(p1, p2, 3);
+    auto p3div = Polynomial::div(p1, p2, 3);
 
     std::string result = "x^4+2x^3+2x^2+x+2";
 
@@ -37,7 +38,7 @@ TEST(Polynomial, add1) {
     Polynomial p1 = parse_polynomial("1x^5+1x^3+2x^0");
     Polynomial p2 = parse_polynomial("1x^1+1x^0");
 
-    auto p3 = add(p1, p2, 3);
+    auto p3 = Polynomial::add(p1, p2, 3);
 
     std::string result = "x^5+x^3+x";
 
@@ -48,7 +49,7 @@ TEST(Polynomial, add2) {
     Polynomial p1 = parse_polynomial("1x^3+4x^2+6x^1+3x^0");
     Polynomial p2 = parse_polynomial("6x^3+3x^2+2x^1+1x^0");
 
-    auto p3 = add(p1, p2, 7);
+    auto p3 = Polynomial::add(p1, p2, 7);
 
     std::string result = "x+4";
 
@@ -59,7 +60,7 @@ TEST(Polynomial, sub1) {
     Polynomial p1 = parse_polynomial("1x^3+4x^2+6x^1+3x^0");
     Polynomial p2 = parse_polynomial("1x^3+4x^2+2x^1+1x^0");
 
-    auto p3 = sub(p1, p2, 7);
+    auto p3 = Polynomial::sub(p1, p2, 7);
 
     std::string result = "4x+2";
 
@@ -70,7 +71,7 @@ TEST(Polynomial, mul1) {
     Polynomial p1 = parse_polynomial("2x^3+1x^2+3x^1+1x^0");
     Polynomial p2 = parse_polynomial("4x^2+1x^1+2x^0");
 
-    auto p3 = mul(p1, p2, 5);
+    auto p3 = Polynomial::mul(p1, p2, 5);
 
     std::string result = "3x^5+x^4+2x^3+4x^2+2x+2";
 
