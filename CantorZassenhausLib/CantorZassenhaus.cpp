@@ -35,18 +35,60 @@ Polynomial get_random_polynomial(int max_degree, int modq) {
 using resultT = std::vector<std::pair<Polynomial, int>>;
 
 resultT square_free_decomposition(Polynomial poly, int modp) {
-	resultT result();
+    std::vector<std::pair<Polynomial, int>> result;
 
+    Polynomial a = poly;
+    int m = 1;
+    
+    Polynomial c;
 
+    do {
+        auto ad = a.diff(modp);
+        c = gcd(a, ad, modp);
+        auto w = Polynomial::div(a, c, modp).first;
+        int i = 1;
+        while (w != Polynomial({ 1 })) {
+            auto y = gcd(w, c, modp);
+            auto qq = Polynomial::div(w, y, modp).first;
+            if (qq != Polynomial({ 1 })) {
+                result.push_back({ qq, i * m });
+            }
+            w = y;
+            c = Polynomial::div(c, y, modp).first;
+            i++;
+        }
+        if (c != Polynomial({ 1 })) {
+            a = c.zip(modp);
+            m = m * modp;
+        }
+    } while (c != Polynomial({1}));
 
-
-	return resultT();
+	return result;
 }
 
 
 
+
+
+
 vector<pair<Polynomial, int>> distinct_degree_factorization(Polynomial poly, int modp) {
-	return vector<pair<Polynomial, int>>();
+    vector<pair<Polynomial, int>> result;
+
+    auto ff = poly;
+    Polynomial h({ 0, 1 });
+    int i = 1;
+    while (ff != Polynomial({ 1 })) {
+        h = powmod(h, modp, poly, modp);
+        auto sbs = Polynomial::sub(h, Polynomial({ 0, 1 }), modp);
+        auto g = gcd(sbs, ff, modp);
+        if (g != Polynomial({ 1 })) {
+            result.push_back({ g, i });
+            ff = Polynomial::div(ff, g, modp).first;
+        }
+        i++;
+    }
+
+    return result;
 }
 
 

@@ -97,13 +97,115 @@ int main8() {
     return 0;
 }
 
-int main() {
+int main9() {
     auto p = parse_polynomial("3x^5+1x^4+2x^3+4x^2+2x^1+2x^0");
 
     cout << p << "\n";
 
     return 0;
 }
+
+int main10() {
+    Polynomial p1 = parse_polynomial("2x^7+1x^6+2x^5+2x^4+2x^3+2x^0");
+    Polynomial p2 = parse_polynomial("2x^3+1x^1+1x^0");
+
+    auto p3div = Polynomial::div(p1, p2, 3);
+
+    std::string result = "x^4+2x^3+2x^2+x+2";
+
+    cout << p3div.first << "\n";
+    cout << result << "\n";
+
+    return 0;
+}
+
+int main11() {
+    Polynomial p1 = parse_polynomial("2x^7+1x^6+2x^5+2x^4+2x^3+2x^0");
+    Polynomial p2 = parse_polynomial("1x^5+1x^3+2x^0");
+
+    auto p3div = gcd(p1, p2, 3);
+
+    std::string result = "x^4+2x^3+2x^2+x+2";
+
+    cout << p3div << "\n";
+    cout << result << "\n";
+
+    return 0;
+}
+
+int main12() {
+    Polynomial p1 = parse_polynomial("2x^7+1x^6+2x^5+2x^4+2x^3+2x^0");
+    Polynomial p2 = p1;
+    p1.coeff[0] += 1;
+
+    cout << p1 << "\n";
+    cout << p2 << "\n";
+
+    return 0;
+}
+
+int main13() {
+    Polynomial p1 = parse_polynomial("1x^12+1x^11+2x^9+2x^8+2x^6+1x^5+2x^4+2x^3");
+    /*auto p2 = p1.diff(3);
+    auto p3 = gcd(p1, p2, 3);
+    cout << p1 << "\n";
+    cout << p2 << "\n";
+    cout << p3 << "\n";
+    cout << Polynomial::div(p1, p2, 3).first << "\n";*/
+
+    auto rez = square_free_decomposition(p1, 3);
+    for (auto p : rez) {
+        cout << p.second << " " << p.first << "\n";
+    }
+
+    return 0;
+}
+
+int main15() {
+    Polynomial p1 = parse_polynomial("1x^1");
+    Polynomial p2 = parse_polynomial("1x^5+1x^4+1x^3+2x^1+2x^0");
+
+    auto rez = Polynomial::div(p1, p2, 3);
+    cout << rez.first << "\n";
+    cout << rez.second << "\n";
+
+    return 0;
+}
+
+
+int main16() {
+    //Polynomial p1 = parse_polynomial("1x^12+1x^11+2x^9+2x^8+2x^6+1x^5+2x^4+2x^3");
+    Polynomial p1 = parse_polynomial("1x^5+1x^4+1x^3+2x^1+2x^0");
+    Polynomial h1({ 0, 1 });
+    auto h = powmod(h1, 3, p1, 3);
+
+    cout << h1 << "\n";
+    cout << h << "\n";
+
+    return 0;
+}
+
+int main17() {
+    //Polynomial p1 = parse_polynomial("1x^12+1x^11+2x^9+2x^8+2x^6+1x^5+2x^4+2x^3");
+    Polynomial p1 = parse_polynomial("1x^5+1x^4+1x^3+2x^1+2x^0");
+    auto r = gcd(Polynomial({ 0, 2, 1 }), p1, 3);
+    cout << r << "\n";
+
+    return 0;
+}
+
+int main() {
+    //Polynomial p1 = parse_polynomial("1x^12+1x^11+2x^9+2x^8+2x^6+1x^5+2x^4+2x^3");
+    Polynomial p1 = parse_polynomial("1x^5+1x^4+1x^3+2x^1+2x^0");
+
+    auto rez = distinct_degree_factorization(p1, 3);
+    for (auto p : rez) {
+        cout << p.second << " " << p.first << "\n";
+    }
+
+    return 0;
+}
+
 
 
 //Polynomial p1 = Polynomial({ 1, 4, 6, 3 });
