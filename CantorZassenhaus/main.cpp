@@ -2,7 +2,7 @@
 
 #include "mpirxx.h"
 
-/*
+
 int main()
 {
 	mpz_class a, b, c;
@@ -12,7 +12,22 @@ int main()
 	std::cout << c << "\n";
 	return 0;
 }
+
+
+/*
+int main()
+{
+    mpz_t a, b;
+    size_t nob;
+    mpz_init(a); mpz_init(b);  //initialization 
+    mpz_set_str(b, "61754454545545454545454", 10); //large things work in strings in this world 
+    nob = mpz_sizeinbase(b, 2); //find how many bits are there in the binary 
+    std::cout << nob << "\n";
+    return 0;
+
+}
 */
+
 // Запуск программы: CTRL+F5 или меню "Отладка" > "Запуск без отладки"
 // Отладка программы: F5 или меню "Отладка" > "Запустить отладку"
 
@@ -214,7 +229,7 @@ int main19() {
     return 0;
 }
 
-int main() {
+int main20() {
     Polynomial p1 = parse_polynomial("1x^12+1x^11+2x^9+2x^8+2x^6+1x^5+2x^4+2x^3");
 
     auto rez = factor(p1, 3);
