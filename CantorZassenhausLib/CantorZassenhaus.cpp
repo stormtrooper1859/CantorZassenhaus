@@ -1,4 +1,4 @@
-#include "CantorZassenhaus.h"
+/*#include "CantorZassenhaus.h"
 
 #include <algorithm>
 #include <chrono>
@@ -174,3 +174,4 @@ std::vector<std::pair<Polynomial, int>> factor(Polynomial poly, int modp) {
 
 	return result;
 }
+*/

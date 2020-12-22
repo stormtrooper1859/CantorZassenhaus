@@ -45,6 +45,7 @@ int main()
 
 using namespace std;
 
+/*
 int main4() {
 
 	std::vector<int64_t> v1({ 2, 1, 3, 1 });
@@ -89,6 +90,7 @@ int main6() {
 
     return 0;
 }
+*/
 
 int main7() {
 
@@ -148,6 +150,8 @@ int main11() {
     return 0;
 }
 
+/*
+check copy
 int main12() {
     Polynomial p1 = parse_polynomial("2x^7+1x^6+2x^5+2x^4+2x^3+2x^0");
     Polynomial p2 = p1;
@@ -158,6 +162,7 @@ int main12() {
 
     return 0;
 }
+*/
 
 int main13() {
     Polynomial p1 = parse_polynomial("1x^12+1x^11+2x^9+2x^8+2x^6+1x^5+2x^4+2x^3");
@@ -190,7 +195,7 @@ int main15() {
 
 int main16() {
     Polynomial p1 = parse_polynomial("1x^5+1x^4+1x^3+2x^1+2x^0");
-    Polynomial h1({ 0, 1 });
+    Polynomial h1 = parse_polynomial("1x^1");
     auto h = powmod(h1, 3, p1, 3);
 
     cout << h1 << "\n";
@@ -201,7 +206,8 @@ int main16() {
 
 int main17() {
     Polynomial p1 = parse_polynomial("1x^5+1x^4+1x^3+2x^1+2x^0");
-    auto r = gcd(Polynomial({ 0, 2, 1 }), p1, 3);
+    Polynomial p2 = parse_polynomial("1x^2+2x^1");
+    auto r = gcd(p2, p1, 3);
     cout << r << "\n";
 
     return 0;
