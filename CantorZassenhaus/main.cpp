@@ -174,7 +174,6 @@ int main15() {
 
 
 int main16() {
-    //Polynomial p1 = parse_polynomial("1x^12+1x^11+2x^9+2x^8+2x^6+1x^5+2x^4+2x^3");
     Polynomial p1 = parse_polynomial("1x^5+1x^4+1x^3+2x^1+2x^0");
     Polynomial h1({ 0, 1 });
     auto h = powmod(h1, 3, p1, 3);
@@ -186,7 +185,6 @@ int main16() {
 }
 
 int main17() {
-    //Polynomial p1 = parse_polynomial("1x^12+1x^11+2x^9+2x^8+2x^6+1x^5+2x^4+2x^3");
     Polynomial p1 = parse_polynomial("1x^5+1x^4+1x^3+2x^1+2x^0");
     auto r = gcd(Polynomial({ 0, 2, 1 }), p1, 3);
     cout << r << "\n";
@@ -194,14 +192,57 @@ int main17() {
     return 0;
 }
 
-int main() {
-    //Polynomial p1 = parse_polynomial("1x^12+1x^11+2x^9+2x^8+2x^6+1x^5+2x^4+2x^3");
+int main18() {
     Polynomial p1 = parse_polynomial("1x^5+1x^4+1x^3+2x^1+2x^0");
 
     auto rez = distinct_degree_factorization(p1, 3);
     for (auto p : rez) {
         cout << p.second << " " << p.first << "\n";
     }
+
+    return 0;
+}
+
+int main19() {
+    Polynomial p1 = parse_polynomial("1x^4+1x^3+1x^1+2x^0");
+
+    auto rez = equal_degree_factorization(p1, 2, 3);
+    for (auto p : rez) {
+        cout << p << "\n";
+    }
+
+    return 0;
+}
+
+int main() {
+    Polynomial p1 = parse_polynomial("1x^12+1x^11+2x^9+2x^8+2x^6+1x^5+2x^4+2x^3");
+
+    auto rez = factor(p1, 3);
+    for (auto p : rez) {
+        cout << p.second << " " << p.first << "\n";
+    }
+
+    return 0;
+}
+
+int main21() {
+    Polynomial p1 = parse_polynomial("1x^2+1x^0");
+
+    auto rez = distinct_degree_factorization(p1, 3);
+    for (auto p : rez) {
+        cout << p.second << " " << p.first << "\n";
+    }
+
+    return 0;
+}
+
+int main22() {
+    Polynomial p1 = parse_polynomial("1x^2+1x^0");
+    Polynomial p2 = parse_polynomial("1x^0");
+
+    auto rez = Polynomial::div(p2, p1, 3);
+    cout << rez.first << "\n";
+    cout << rez.second << "\n";
 
     return 0;
 }

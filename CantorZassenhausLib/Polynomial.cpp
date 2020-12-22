@@ -122,6 +122,13 @@ std::ostream& operator<<(std::ostream& strm, const Polynomial& poly) {
 
 Polynomial Polynomial::add(const Polynomial & a, const Polynomial & b, const int64_t modp)
 {
+    if (a == Polynomial({})) {
+        return b;
+    }
+    if (b == Polynomial({})) {
+        return a;
+    }
+
     const Polynomial& a1 = a.get_degree() > b.get_degree() ? a : b;
     const Polynomial& b1 = a.get_degree() > b.get_degree() ? b : a;
 
@@ -145,6 +152,11 @@ Polynomial Polynomial::add(const Polynomial & a, const Polynomial & b, const int
 
 Polynomial Polynomial::mul(const Polynomial & a, const Polynomial & b, const int64_t modp)
 {
+    if (a == Polynomial({}) || b == Polynomial({})) {
+        return Polynomial({});
+    }
+
+
     std::vector<int64_t> v(a.get_degree() + b.get_degree() + 1);
     
     for (int i = 0; i <= a.get_degree(); ++i) {
@@ -246,6 +258,13 @@ bool operator!=(const Polynomial & poly1, const Polynomial & poly2)
 
 Polynomial gcd(Polynomial a1, Polynomial b1, int modp)
 {
+    if (a1 == Polynomial({})) {
+        return b1;
+    }
+    if (b1 == Polynomial({})) {
+        return a1;
+    }
+
     auto a = a1.normalize(modp);
     auto b = b1.normalize(modp);
 
