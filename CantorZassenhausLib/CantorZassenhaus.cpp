@@ -1,4 +1,4 @@
-/*#include "CantorZassenhaus.h"
+#include "CantorZassenhaus.h"
 
 #include <algorithm>
 #include <chrono>
@@ -7,36 +7,14 @@
 
 using namespace std;
 
-// include max_degree
-Polynomial get_random_polynomial(int max_degree, int modq) {
-    std::mt19937 rng(std::chrono::steady_clock::now().time_since_epoch().count());
-
-    uniform_int_distribution<int> dist(0, modq - 1);
-    uniform_int_distribution<int> dist_degree(0, max_degree - 1);
-
-    auto degree = dist_degree(rng) + 1;
-    
-    std::vector<int64_t> vr(degree + 1);
-    vr[0] = 1;
-
-    for (size_t i = 1; i < degree + 1; i++)
-    {
-        vr[i] = dist(rng);
-    }
-
-    Polynomial result(vr);
-
-    return result;
-}
-
-
+#include <iostream>
 
 
 
 
 using resultT = std::vector<std::pair<Polynomial, int>>;
 
-resultT square_free_decomposition(Polynomial poly, int modp) {
+resultT square_free_decomposition(Polynomial poly, mpz_class modp) {
     std::vector<std::pair<Polynomial, int>> result;
 
     Polynomial a = poly;
@@ -49,21 +27,21 @@ resultT square_free_decomposition(Polynomial poly, int modp) {
         c = gcd(a, ad, modp);
         auto w = Polynomial::div(a, c, modp).first;
         int i = 1;
-        while (w != Polynomial({ 1 })) {
+        while (!w.is_one()) {
             auto y = gcd(w, c, modp);
             auto qq = Polynomial::div(w, y, modp).first;
-            if (qq != Polynomial({ 1 })) {
+            if (!qq.is_one()) {
                 result.push_back({ qq, i * m });
             }
             w = y;
             c = Polynomial::div(c, y, modp).first;
             i++;
         }
-        if (c != Polynomial({ 1 })) {
-            a = c.zip(modp);
-            m = m * modp;
+        if (!c.is_one()) {
+            a = c.zip(modp.get_si());
+            m = m * modp.get_si();
         }
-    } while (c != Polynomial({1}));
+    } while (!c.is_one());
 
 	return result;
 }
@@ -73,17 +51,19 @@ resultT square_free_decomposition(Polynomial poly, int modp) {
 
 
 
-vector<pair<Polynomial, int>> distinct_degree_factorization(Polynomial poly, int modp) {
+vector<pair<Polynomial, int>> distinct_degree_factorization(Polynomial poly, mpz_class modp) {
     vector<pair<Polynomial, int>> result;
 
     auto ff = poly;
-    Polynomial h({ 0, 1 });
+    //Polynomial h({ 0, 1 });
+    Polynomial h("1x^1");
+    Polynomial href = h;
     int i = 1;
-    while (ff != Polynomial({ 1 })) {
+    while (!ff.is_one()) {
         h = powmod(h, modp, poly, modp);
-        auto sbs = Polynomial::sub(h, Polynomial({ 0, 1 }), modp);
+        auto sbs = Polynomial::sub(h, href, modp);
         auto g = gcd(sbs, ff, modp);
-        if (g != Polynomial({ 1 })) {
+        if (!g.is_one()) {
             result.push_back({ g, i });
             ff = Polynomial::div(ff, g, modp).first;
         }
@@ -98,36 +78,65 @@ vector<pair<Polynomial, int>> distinct_degree_factorization(Polynomial poly, int
 
 
 
-vector<Polynomial> equal_degree_factorization(Polynomial poly, int degree, int modp) {
+vector<Polynomial> equal_degree_factorization(Polynomial poly, int degree, mpz_class modp) {
     if (poly.get_degree() == degree) {
         return vector<Polynomial>({ poly });
     }
 
 	vector<Polynomial> result;
 
-    Polynomial g({ 1 });
+    Polynomial g = Polynomial::get_one();
+    Polynomial genpol;
+    int i = 0;
 
-    while (g == Polynomial({ 1 }) || g == poly) {
+    while (g.is_one() || g == poly) {
+        i++;
         int deg = poly.get_degree() - 1;
         assert(deg > 0);
-        auto genpol = get_random_polynomial(deg, modp);
+        genpol = get_random_polynomial(deg, modp);
+        //! genpol = Polynomial("1x^10+1x^9+1x^5+1x^2");
+        //! genpol = Polynomial("1x^10+1x^9+1x^6+1x^5+1x^3+1x^1+1x^0");
+        //! cout << "genpol: " << genpol << endl;
         auto gpa = Polynomial::div(genpol, poly, modp);
         assert(gpa.first == Polynomial({}));
         auto gp = gpa.second;
-        if (g == Polynomial({ 1 })) {
+        g = gcd(gp, poly, modp);
+        if (g.is_one()) {
             Polynomial h;
             if (modp == 2) {
-                assert(false);
+                for (size_t j = 0; j < degree; j++)
+                {
+                    mpz_class t;
+                    mpz_pow_ui(t.get_mpz_t(), mpz_class(2).get_mpz_t(), j);
+
+                    auto t2 = powmod(gp, t, poly, modp);
+                    h = Polynomial::div(Polynomial::add(h, t2, modp), poly, modp).second;
+                    //! cout << t << " " << t2 << " " << h << endl;
+                }
+
+                // h = Polynomial("1x^12+1x^11+1x^9+1x^8+1x^7+1x^2");
+                // cout << h << endl;
+
+                // assert(false);
             } else {
-                int t = 1;
-                for (int i = 0; i < degree - 1; i++) t *= modp;
+
+                // mpz_class p2(degree);
+
+                mpz_class t;
+                mpz_pow_ui(t.get_mpz_t(), modp.get_mpz_t(), degree);
+
+                //int t = 1;
+                //for (int i = 0; i < degree - 1; i++) t *= modp;
                 t /= 2;
+
                 h = powmod(gp, t, poly, modp);
-                h = Polynomial::sub(h, Polynomial({ 1 }), modp);
+                h = Polynomial::sub(h, Polynomial::get_one(), modp);
             }
             g = gcd(h, poly, modp);
         }
     }
+    //! cout << i << "\n" << genpol << endl;
+    //! cout << i << "\n" << genpol << endl;
     auto g2 = Polynomial::div(poly, g, modp).first;
     auto r1 = equal_degree_factorization(g, degree, modp);
     auto r2 = equal_degree_factorization(g2, degree, modp);
@@ -142,7 +151,7 @@ vector<Polynomial> equal_degree_factorization(Polynomial poly, int degree, int m
 
 
 
-vector<Polynomial> factor_square_free(Polynomial poly, int modp) {
+vector<Polynomial> factor_square_free(Polynomial poly, mpz_class modp) {
     vector<Polynomial> result;
 
     auto distDeg = distinct_degree_factorization(poly, modp);
@@ -159,7 +168,9 @@ vector<Polynomial> factor_square_free(Polynomial poly, int modp) {
 
 
 
-std::vector<std::pair<Polynomial, int>> factor(Polynomial poly, int modp) {
+std::vector<std::pair<Polynomial, int>> factor(Polynomial poly, mpz_class modp) {
+    std::chrono::steady_clock::time_point begin = std::chrono::steady_clock::now();
+
     std::vector<std::pair<Polynomial, int>> result;
 
     std::vector<std::pair<Polynomial, int>> sqrfree = square_free_decomposition(poly, modp);
@@ -172,6 +183,9 @@ std::vector<std::pair<Polynomial, int>> factor(Polynomial poly, int modp) {
         }
 	}
 
+    std::chrono::steady_clock::time_point end = std::chrono::steady_clock::now();
+
+    std::cout << "Time difference = " << std::chrono::duration_cast<std::chrono::milliseconds>(end - begin).count() << "[ms]" << std::endl;
+
 	return result;
 }
-*/

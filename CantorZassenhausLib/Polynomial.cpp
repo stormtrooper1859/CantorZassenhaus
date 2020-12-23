@@ -146,7 +146,7 @@ Polynomial Polynomial::add(const Polynomial & a, const Polynomial & b, const mpz
 
     for (size_t i = b1.get_degree() + 1; i <= a1.get_degree(); i++)
     {
-        v[i] = a.coeff[i];
+        v[i] = a1.coeff[i];
     }
 
     Polynomial p = Polynomial(v);
@@ -288,15 +288,15 @@ Polynomial gcd(Polynomial a1, Polynomial b1, mpz_class modp)
     return a.normalize(modp);
 }
 
-Polynomial powmod(Polynomial a, int b, Polynomial mod, mpz_class modp)
+Polynomial powmod(Polynomial a, mpz_class b, Polynomial mod, mpz_class modp)
 {
-    int power = b;
+    mpz_class power = b;
 
     // Polynomial rez({ 1 });
     Polynomial rez = Polynomial::get_one();
     Polynomial aa = a;
     while (power > 0) {
-        if (power % 2) {
+        if (power % 2 == 1) {
             rez = Polynomial::mul(rez, aa, modp);
             rez = Polynomial::div(rez, mod, modp).second;
         }
@@ -328,6 +328,36 @@ bool Polynomial::is_one() const
 
 
 
+
+
+#include <algorithm>
+#include <chrono>
+#include <random>
+
+
+// include max_degree
+Polynomial get_random_polynomial(int max_degree, mpz_class modq) {
+    std::mt19937 rng(std::chrono::steady_clock::now().time_since_epoch().count());
+
+    uniform_int_distribution<int> dist(0, modq.get_si() - 1);
+    uniform_int_distribution<int> dist_degree(0, max_degree - 1);
+
+    auto degree = dist_degree(rng) + 1;
+
+    std::vector<mpz_class> vr(degree + 1);
+    vr[degree] = 1;
+
+    for (size_t i = 0; i < degree; i++)
+    {
+        vr[i] = dist(rng);
+    }
+
+    Polynomial result(vr);
+
+    result.prune();
+
+    return result;
+}
 
 
 

@@ -8,6 +8,7 @@
 
 #include "mpirxx.h"
 
+//[DebuggerDisplay("{DebuggerDisplay,nq}")]
 class Polynomial
 {
 public:
@@ -16,11 +17,12 @@ private:
 
     void prune();
 
-    Polynomial() {}
 
     Polynomial(std::vector<mpz_class> coeff) : coeff(coeff) {};
 
 public:
+    Polynomial() {}
+
     Polynomial(std::string s);
 
     Polynomial(const Polynomial &polynomial) : coeff(polynomial.coeff) {};
@@ -53,6 +55,8 @@ public:
 
     friend bool operator== (const Polynomial &poly1, const Polynomial &poly2);
     friend bool operator!= (const Polynomial &poly1, const Polynomial &poly2);
+    friend Polynomial get_random_polynomial(int max_degree, mpz_class modq);
+
 };
 
 
@@ -61,7 +65,9 @@ std::ostream & operator<<(std::ostream & Str, Polynomial const & v);
 Polynomial parse_polynomial(std::string s);
 
 
+Polynomial get_random_polynomial(int max_degree, mpz_class modq);
+
 
 Polynomial gcd(Polynomial a, Polynomial b, mpz_class modp);
 
-Polynomial powmod(Polynomial a, int b, Polynomial mod, mpz_class modp);
+Polynomial powmod(Polynomial a, mpz_class b, Polynomial mod, mpz_class modp);
