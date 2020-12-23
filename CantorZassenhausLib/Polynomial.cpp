@@ -8,9 +8,7 @@
 using namespace std;
 
 
-
-
-
+int64_t wtf = 0;
 
 
 Polynomial::Polynomial(std::string str)
@@ -157,28 +155,25 @@ Polynomial Polynomial::add(const Polynomial & a, const Polynomial & b, const mpz
 
 Polynomial Polynomial::mul(const Polynomial & a, const Polynomial & b, const mpz_class modp)
 {
-    if (a == Polynomial({}) || b == Polynomial({})) {
+    if (a.is_zero() || b.is_zero()) {
         return Polynomial({});
     }
-
 
     std::vector<mpz_class> v(a.get_degree() + b.get_degree() + 1);
     
     for (int i = 0; i <= a.get_degree(); ++i) {
         for (int j = 0; j <= b.get_degree(); ++j) {
-            if (modp == -1) {
-                v[i + j] = (v[i + j] + a.coeff[i] * b.coeff[j]);
-            }
-            else {
-                v[i + j] = (v[i + j] + a.coeff[i] * b.coeff[j]) % modp;
-                v[i + j] = (v[i + j] + modp) % modp;
-            }
+            v[i + j] = (v[i + j] + a.coeff[i] * b.coeff[j] % modp + modp) % modp;
         }
     }
-    Polynomial p = Polynomial();
-    p.coeff = v;
-    return p;
+
+    return Polynomial(v);
 }
+
+
+
+
+
 
 
 Polynomial Polynomial::sub(const Polynomial & a, const Polynomial & b, const mpz_class modp)
@@ -187,20 +182,10 @@ Polynomial Polynomial::sub(const Polynomial & a, const Polynomial & b, const mpz
 }
 
 
-mpz_class bin_pow(mpz_class a, mpz_class power, mpz_class modp) {
-    mpz_class rez = 1;
-    while (power > 0) {
-        if (power % 2 == 1) {
-            rez = (rez * a) % modp;
-        }
-        a = (a * a) % modp;
-        power /= 2;
-    }
-    return rez;
-}
-
 mpz_class inversed(mpz_class a, mpz_class modp) {
-    return bin_pow(a, modp - 2, modp);
+    mpz_class rezult;
+    mpz_invert(rezult.get_mpz_t(), a.get_mpz_t(), modp.get_mpz_t());
+    return rezult;
 }
 
 
@@ -210,10 +195,7 @@ mpz_class inversed(mpz_class a, mpz_class modp) {
 std::pair< Polynomial, Polynomial> Polynomial::div(const Polynomial & a, const Polynomial & b, const mpz_class modp)
 {
     mpz_class bl = b.coeff.back();
-    //mpz_class ib = inversed(bl, modp);
-    //Polynomial b2 = mul(b, Polynomial({ ib }), modp);
-
-     Polynomial b2 = b.normalize(modp);
+    Polynomial b2 = b.normalize(modp);
 
     int degree_of_result = a.get_degree() - b.get_degree() + 1;
 
@@ -224,11 +206,6 @@ std::pair< Polynomial, Polynomial> Polynomial::div(const Polynomial & a, const P
     std::vector<mpz_class> coeff_result(degree_of_result);
 
     Polynomial at = a;
-
-    int c1 = coeff_result.size();
-    int c2 = at.coeff.size();
-    int c3 = b2.coeff.size();
-    int c4 = b2.get_degree();
 
     for (int i = 0; i < degree_of_result; i++)
     {
@@ -248,6 +225,9 @@ std::pair< Polynomial, Polynomial> Polynomial::div(const Polynomial & a, const P
     return { quo, rem };
 }
 
+
+
+
 Polynomial Polynomial::get_one()
 {
     return Polynomial({ mpz_class(1) });
@@ -266,7 +246,7 @@ bool operator!=(const Polynomial & poly1, const Polynomial & poly2)
 
 
 
-Polynomial gcd(Polynomial a1, Polynomial b1, mpz_class modp)
+Polynomial gcd(const Polynomial& a1, const Polynomial& b1, mpz_class modp)
 {
     if (a1.is_zero()) {
         return b1;
@@ -288,7 +268,7 @@ Polynomial gcd(Polynomial a1, Polynomial b1, mpz_class modp)
     return a.normalize(modp);
 }
 
-Polynomial powmod(Polynomial a, mpz_class b, Polynomial mod, mpz_class modp)
+Polynomial powmod(const Polynomial& a, mpz_class b, const Polynomial& mod, mpz_class modp)
 {
     mpz_class power = b;
 
@@ -313,7 +293,14 @@ Polynomial Polynomial::normalize(mpz_class modp) const
     mpz_class bl = this->coeff.back();
     mpz_class ib = inversed(bl, modp);
 
-    return mul(*this, Polynomial({ ib }), modp);
+    vector<mpz_class> v = this->coeff;
+
+    for (int i = 0; i < v.size(); i++) {
+        v[i] = (v[i] * ib) % modp;
+    }
+
+    // return mul(*this, Polynomial({ ib }), modp);
+    return Polynomial(v);
 }
 
 bool Polynomial::is_zero() const
@@ -326,6 +313,11 @@ bool Polynomial::is_one() const
     return *this == Polynomial({ mpz_class(1) });
 }
 
+Polynomial::~Polynomial()
+{
+    wtf += 1;
+}
+
 
 
 
@@ -335,8 +327,9 @@ bool Polynomial::is_one() const
 #include <random>
 
 
-// include max_degree
-Polynomial get_random_polynomial(int max_degree, mpz_class modq) {
+
+Polynomial Polynomial::get_random_polynomial(int max_degree, mpz_class modq)
+{
     std::mt19937 rng(std::chrono::steady_clock::now().time_since_epoch().count());
 
     uniform_int_distribution<int> dist(0, modq.get_si() - 1);
@@ -358,8 +351,3 @@ Polynomial get_random_polynomial(int max_degree, mpz_class modq) {
 
     return result;
 }
-
-
-
-
-

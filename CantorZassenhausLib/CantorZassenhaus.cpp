@@ -93,7 +93,7 @@ vector<Polynomial> equal_degree_factorization(Polynomial poly, int degree, mpz_c
         i++;
         int deg = poly.get_degree() - 1;
         assert(deg > 0);
-        genpol = get_random_polynomial(deg, modp);
+        genpol = Polynomial::get_random_polynomial(deg, modp);
         //! genpol = Polynomial("1x^10+1x^9+1x^5+1x^2");
         //! genpol = Polynomial("1x^10+1x^9+1x^6+1x^5+1x^3+1x^1+1x^0");
         //! cout << "genpol: " << genpol << endl;
