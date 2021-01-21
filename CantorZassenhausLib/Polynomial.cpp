@@ -2,6 +2,8 @@
 
 #include <string>
 #include <algorithm>
+#include <chrono>
+#include <random>
 
 #include "Utils.h"
 
@@ -66,7 +68,6 @@ std::string Polynomial::to_string(std::string default_variable_name) const
         }
 
         if (this->coeff[i] != 1 || i == 0) {
-            // result += std::to_string(this->coeff[i]);
             result += this->coeff[i].get_str();
         }
         if (i != 0) {
@@ -75,6 +76,10 @@ std::string Polynomial::to_string(std::string default_variable_name) const
                 result += "^" + std::to_string(i);
             }
         }
+    }
+
+    if (result == "") {
+        return "0";
     }
 
     return result;
@@ -443,9 +448,6 @@ Polynomial::~Polynomial()
 
 
 
-#include <algorithm>
-#include <chrono>
-#include <random>
 
 
 

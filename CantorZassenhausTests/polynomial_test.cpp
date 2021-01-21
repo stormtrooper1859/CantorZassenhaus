@@ -88,3 +88,28 @@ TEST(Polynomial, mul2) {
 
     EXPECT_EQ(p3.to_string(), result);
 }
+
+TEST(Polynomial, div_and_mod) {
+    Polynomial p1 = Polynomial("1x^2+1x^0");
+    Polynomial p2 = Polynomial("1x^0");
+
+    auto rm = Polynomial::mod(p2, p1, 3);
+    auto rd = Polynomial::div(p2, p1, 3);
+
+    std::string em = "1";
+    std::string ed = "0";
+
+    EXPECT_EQ(rm.to_string(), em);
+    EXPECT_EQ(rd.to_string(), ed);
+}
+
+TEST(Polynomial, gcd1) {
+    Polynomial p1 = Polynomial("2x^7+1x^6+2x^5+2x^4+2x^3+2x^0");
+    Polynomial p2 = Polynomial("1x^5+1x^3+2x^0");
+
+    auto result = gcd(p1, p2, 3);
+
+    std::string expected = "x^4+2x^3+2x^2+x+2";
+
+    EXPECT_EQ(result.to_string(), expected);
+}

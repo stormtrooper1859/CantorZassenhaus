@@ -10,10 +10,8 @@
 
 extern int64_t wtf;
 
-//[DebuggerDisplay("{DebuggerDisplay,nq}")]
 class Polynomial
 {
-// public:
 private:
     std::vector <mpz_class> coeff;
 
