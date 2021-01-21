@@ -351,6 +351,20 @@ bool operator!=(const Polynomial & poly1, const Polynomial & poly2)
 }
 
 
+bool operator< (const Polynomial &poly1, const Polynomial &poly2) {
+    if (poly1.coeff.size() == poly2.coeff.size()) {
+        for (int i = poly1.coeff.size() - 1; i >= 0; i--) {
+            if (poly1.coeff[i] != poly2.coeff[i]) {
+                return poly1.coeff[i] < poly2.coeff[i];
+            }
+        }
+
+        return false;
+    }
+
+    return poly1.coeff.size() < poly2.coeff.size();
+}
+
 
 
 Polynomial gcd(const Polynomial& a1, const Polynomial& b1, mpz_class modp)

@@ -13,8 +13,8 @@ extern int64_t wtf;
 //[DebuggerDisplay("{DebuggerDisplay,nq}")]
 class Polynomial
 {
-public:
-//private:
+// public:
+private:
     std::vector <mpz_class> coeff;
 
     void prune();
@@ -61,6 +61,7 @@ public:
     bool is_one() const;
 
     friend bool operator== (const Polynomial &poly1, const Polynomial &poly2);
+    friend bool operator< (const Polynomial &poly1, const Polynomial &poly2);
     friend bool operator!= (const Polynomial &poly1, const Polynomial &poly2);
 
     ~Polynomial();

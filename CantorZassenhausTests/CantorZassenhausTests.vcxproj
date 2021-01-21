@@ -33,7 +33,8 @@
   <ImportGroup Label="PropertySheets" />
   <PropertyGroup Label="UserMacros" />
   <ItemGroup>
-    <ClCompile Include="test.cpp" />
+    <ClCompile Include="cz_test.cpp" />
+    <ClCompile Include="polynomial_test.cpp" />
   </ItemGroup>
   <ItemGroup>
     <None Include="packages.config" />
