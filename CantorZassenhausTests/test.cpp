@@ -20,7 +20,7 @@ TEST(Polynomial, div1) {
 
     std::string result = "x^4+2x^3+2x^2+x+2";
 
-    EXPECT_EQ(p3div.first.to_string(), result);
+    EXPECT_EQ(p3div.to_string(), result);
 }
 
 TEST(Polynomial, div2) {
@@ -31,7 +31,7 @@ TEST(Polynomial, div2) {
 
     std::string result = "x^4+2x^3+2x^2+x+2";
 
-    EXPECT_EQ(p3div.first.to_string(), result);
+    EXPECT_EQ(p3div.to_string(), result);
 }
 
 TEST(Polynomial, add1) {

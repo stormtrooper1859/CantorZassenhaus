@@ -22,16 +22,16 @@ std::vector<std::pair<Polynomial, int>> square_free_decomposition(Polynomial pol
     do {
         auto ad = a.diff(modp);
         c = gcd(a, ad, modp);
-        auto w = Polynomial::div(a, c, modp).first;
+        auto w = Polynomial::div(a, c, modp);
         int i = 1;
         while (!w.is_one()) {
             auto y = gcd(w, c, modp);
-            auto qq = Polynomial::div(w, y, modp).first;
+            auto qq = Polynomial::div(w, y, modp);
             if (!qq.is_one()) {
                 result.push_back({ qq, i * m });
             }
             w = y;
-            c = Polynomial::div(c, y, modp).first;
+            c = Polynomial::div(c, y, modp);
             i++;
         }
         if (!c.is_one()) {
@@ -62,7 +62,7 @@ vector<pair<Polynomial, int>> distinct_degree_factorization(Polynomial poly, mpz
         auto g = gcd(sbs, ff, modp);
         if (!g.is_one()) {
             result.push_back({ g, i });
-            ff = Polynomial::div(ff, g, modp).first;
+            ff = Polynomial::div(ff, g, modp);
         }
         i++;
     }
@@ -94,9 +94,9 @@ vector<Polynomial> equal_degree_factorization(Polynomial poly, int degree, mpz_c
         //! genpol = Polynomial("1x^10+1x^9+1x^5+1x^2");
         //! genpol = Polynomial("1x^10+1x^9+1x^6+1x^5+1x^3+1x^1+1x^0");
         //! cout << "genpol: " << genpol << endl;
-        auto gpa = Polynomial::div(genpol, poly, modp);
-        assert(gpa.first == Polynomial({}));
-        auto gp = gpa.second;
+        auto gp = Polynomial::mod(genpol, poly, modp);
+        // assert(gpa.first == Polynomial({}));
+        // auto gp = gpa.second;
         g = gcd(gp, poly, modp);
         if (g.is_one()) {
             Polynomial h;
@@ -107,7 +107,7 @@ vector<Polynomial> equal_degree_factorization(Polynomial poly, int degree, mpz_c
                     mpz_pow_ui(t.get_mpz_t(), mpz_class(2).get_mpz_t(), j);
 
                     auto t2 = powmod(gp, t, poly, modp);
-                    h = Polynomial::div(Polynomial::add(h, t2, modp), poly, modp).second;
+                    h = Polynomial::mod(Polynomial::add(h, t2, modp), poly, modp);
                     //! cout << t << " " << t2 << " " << h << endl;
                 }
 
@@ -134,7 +134,7 @@ vector<Polynomial> equal_degree_factorization(Polynomial poly, int degree, mpz_c
     }
     //! cout << i << "\n" << genpol << endl;
     //! cout << i << "\n" << genpol << endl;
-    auto g2 = Polynomial::div(poly, g, modp).first;
+    auto g2 = Polynomial::div(poly, g, modp);
     auto r1 = equal_degree_factorization(g, degree, modp);
     auto r2 = equal_degree_factorization(g2, degree, modp);
 

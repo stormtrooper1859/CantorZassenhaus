@@ -287,7 +287,7 @@ mpz_class inversed(mpz_class a, mpz_class modp) {
 
 
 
-std::pair< Polynomial, Polynomial> Polynomial::div(const Polynomial & a, const Polynomial & b, const mpz_class modp)
+std::pair< Polynomial, Polynomial> Polynomial::div_internal(const Polynomial & a, const Polynomial & b, const mpz_class modp)
 {
     mpz_class bl = b.coeff.back();
     Polynomial b2 = b.normalize(modp);
@@ -318,6 +318,18 @@ std::pair< Polynomial, Polynomial> Polynomial::div(const Polynomial & a, const P
     at.prune();
 
     return { quo, at };
+}
+
+
+Polynomial Polynomial::div(const Polynomial & a, const Polynomial & b, const mpz_class modp)
+{
+    return Polynomial::div_internal(a, b, modp).first;
+}
+
+
+Polynomial Polynomial::mod(const Polynomial & a, const Polynomial & b, const mpz_class modp)
+{
+    return Polynomial::div_internal(a, b, modp).second;
 }
 
 
@@ -354,7 +366,7 @@ Polynomial gcd(const Polynomial& a1, const Polynomial& b1, mpz_class modp)
     auto b = b1.normalize(modp);
 
     while (!b.is_zero()) {
-        a = Polynomial::div(a, b, modp).second;
+        a = Polynomial::mod(a, b, modp);
         auto z = a;
         a = b;
         b = z;
@@ -373,10 +385,10 @@ Polynomial powmod(const Polynomial& a, mpz_class b, const Polynomial& mod, mpz_c
     while (power > 0) {
         if (power % 2 == 1) {
             rez = Polynomial::mul(rez, aa, modp);
-            rez = Polynomial::div(rez, mod, modp).second;
+            rez = Polynomial::mod(rez, mod, modp);
         }
         aa = Polynomial::mul(aa, aa, modp);
-        aa = Polynomial::div(aa, mod, modp).second;
+        aa = Polynomial::mod(aa, mod, modp);
         power /= 2;
     }
     return rez;

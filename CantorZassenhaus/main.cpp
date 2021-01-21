@@ -130,7 +130,7 @@ int main10() {
 
     std::string result = "x^4+2x^3+2x^2+x+2";
 
-    cout << p3div.first << "\n";
+    cout << p3div << "\n";
     cout << result << "\n";
 
     return 0;
@@ -185,9 +185,10 @@ int main15() {
     Polynomial p1 = parse_polynomial("1x^1");
     Polynomial p2 = parse_polynomial("1x^5+1x^4+1x^3+2x^1+2x^0");
 
-    auto rez = Polynomial::div(p1, p2, 3);
-    cout << rez.first << "\n";
-    cout << rez.second << "\n";
+    auto rez1 = Polynomial::div(p1, p2, 3);
+    auto rez2 = Polynomial::mod(p1, p2, 3);
+    cout << rez1 << "\n";
+    cout << rez2 << "\n";
 
     return 0;
 }
@@ -261,9 +262,10 @@ int main22() {
     Polynomial p1 = parse_polynomial("1x^2+1x^0");
     Polynomial p2 = parse_polynomial("1x^0");
 
-    auto rez = Polynomial::div(p2, p1, 3);
-    cout << rez.first << "\n";
-    cout << rez.second << "\n";
+    auto rez1 = Polynomial::div(p2, p1, 3);
+    auto rez2 = Polynomial::mod(p2, p1, 3);
+    cout << rez1 << "\n";
+    cout << rez2 << "\n";
 
     return 0;
 }

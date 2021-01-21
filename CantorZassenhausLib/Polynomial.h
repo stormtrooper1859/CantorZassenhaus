@@ -21,6 +21,8 @@ public:
 
     Polynomial(std::vector<mpz_class> coeff) : coeff(coeff) {};
 
+    static std::pair<Polynomial, Polynomial> div_internal(const Polynomial& a, const Polynomial& b, const mpz_class modp);
+
 public:
     Polynomial() {}
 
@@ -44,7 +46,9 @@ public:
 
     static Polynomial mul(const Polynomial& a, const Polynomial& b, const mpz_class modp);
 
-    static std::pair<Polynomial, Polynomial> div(const Polynomial& a, const Polynomial& b, const mpz_class modp);
+    static Polynomial div(const Polynomial& a, const Polynomial& b, const mpz_class modp);
+
+    static Polynomial mod(const Polynomial& a, const Polynomial& b, const mpz_class modp);
 
     static Polynomial get_one();
 
