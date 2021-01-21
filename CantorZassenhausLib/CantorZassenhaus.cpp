@@ -12,15 +12,12 @@ using namespace std;
 
 
 
-using resultT = std::vector<std::pair<Polynomial, int>>;
-
-resultT square_free_decomposition(Polynomial poly, mpz_class modp) {
+std::vector<std::pair<Polynomial, int>> square_free_decomposition(Polynomial poly, mpz_class modp) {
     std::vector<std::pair<Polynomial, int>> result;
 
     Polynomial a = poly;
-    int m = 1;
-    
     Polynomial c;
+    int m = 1;
 
     do {
         auto ad = a.diff(modp);

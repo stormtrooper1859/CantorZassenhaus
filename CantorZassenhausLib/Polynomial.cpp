@@ -153,32 +153,127 @@ Polynomial Polynomial::add(const Polynomial & a, const Polynomial & b, const mpz
 }
 
 
-Polynomial Polynomial::mul(const Polynomial & a, const Polynomial & b, const mpz_class modp)
-{
-    if (a.is_zero() || b.is_zero()) {
-        return Polynomial({});
-    }
+//Polynomial Polynomial::mul(const Polynomial & a, const Polynomial & b, const mpz_class modp)
+//{
+//    if (a.is_zero() || b.is_zero()) {
+//        return Polynomial({});
+//    }
+//
+//    std::vector<mpz_class> v(a.get_degree() + b.get_degree() + 1);
+//    
+//    for (int i = 0; i <= a.get_degree(); ++i) {
+//        for (int j = 0; j <= b.get_degree(); ++j) {
+//            v[i + j] = (v[i + j] + a.coeff[i] * b.coeff[j]) % modp;
+//        }
+//    }
+//
+//    return Polynomial(v);
+//}
 
-    std::vector<mpz_class> v(a.get_degree() + b.get_degree() + 1);
-    
-    for (int i = 0; i <= a.get_degree(); ++i) {
-        for (int j = 0; j <= b.get_degree(); ++j) {
-            v[i + j] = (v[i + j] + a.coeff[i] * b.coeff[j] % modp + modp) % modp;
+
+const int len_f_naive = 42;
+
+
+vector<mpz_class> naive_mul(const vector<mpz_class>& x, const vector<mpz_class>& y, mpz_class modp) {
+    auto len = x.size();
+    vector<mpz_class> res(2 * len);
+
+    for (auto i = 0; i < len; ++i) {
+        for (auto j = 0; j < len; ++j) {
+            res[i + j] = (res[i + j] + x[i] * y[j]) % modp;
         }
     }
 
-    return Polynomial(v);
+    return res;
+}
+
+vector<mpz_class> karatsuba_mul(const vector<mpz_class>& x, const vector<mpz_class>& y, mpz_class modp) {
+    auto len = x.size();
+    vector<mpz_class> res(2 * len);
+
+    if (len <= len_f_naive) {
+        return naive_mul(x, y, modp);
+    }
+
+    auto k = len / 2;
+
+    vector<mpz_class> Xr{ x.begin(), x.begin() + k };
+    vector<mpz_class> Xl{ x.begin() + k, x.end() };
+    vector<mpz_class> Yr{ y.begin(), y.begin() + k };
+    vector<mpz_class> Yl{ y.begin() + k, y.end() };
+
+    vector<mpz_class> P1 = karatsuba_mul(Xl, Yl, modp);
+    vector<mpz_class> P2 = karatsuba_mul(Xr, Yr, modp);
+
+    vector<mpz_class> Xlr(k);
+    vector<mpz_class> Ylr(k);
+
+    for (int i = 0; i < k; ++i) {
+        Xlr[i] = Xl[i] + Xr[i];
+        Ylr[i] = Yl[i] + Yr[i];
+    }
+
+    vector<mpz_class> P3 = karatsuba_mul(Xlr, Ylr, modp);
+
+    for (int i = 0; i < len; ++i) {
+        P3[i] = (P3[i] - (P2[i] + P1[i]) + modp) % modp;
+    }
+
+    for (int i = 0; i < len; ++i) {
+        res[i] = P2[i];
+    }
+
+    for (int i = len; i < 2 * len; ++i) {
+        res[i] = P1[i - len];
+    }
+
+    for (int i = k; i < len + k; ++i) {
+        res[i] = (res[i] + P3[i - k]) % modp;
+        // TODO speed up by if
+    }
+
+    return res;
 }
 
 
+Polynomial Polynomial::mul(const Polynomial & a, const Polynomial & b, const mpz_class modp)
+{
+    vector<mpz_class> va = a.coeff;
+    vector<mpz_class> vb = b.coeff;
 
+    int mx = max(va.size(), vb.size());
+    int rz = (mx & !(mx - 1)) == mx ? 0 : 1;
+    while (mx > 0) {
+        rz *= 2;
+        mx /= 2;
+    }
+
+    for (int i = va.size(); i < rz; i++) {
+        va.push_back(0);
+    }
+    for (int i = vb.size(); i < rz; i++) {
+        vb.push_back(0);
+    }
+    
+    auto vc = karatsuba_mul(va, vb, modp);
+    Polynomial rez(vc);
+    rez.prune();
+
+    return rez;
+}
 
 
 
 
 Polynomial Polynomial::sub(const Polynomial & a, const Polynomial & b, const mpz_class modp)
 {
-    return add(a, mul(b, Polynomial({ mpz_class(-1) }), modp), modp);
+    vector<mpz_class> v = b.coeff;
+
+    for (int i = 0; i < v.size(); i++) {
+        v[i] = modp - v[i];
+    }
+
+    return add(a, Polynomial(v), modp);
 }
 
 
@@ -219,10 +314,10 @@ std::pair< Polynomial, Polynomial> Polynomial::div(const Polynomial & a, const P
     }
 
     Polynomial quo = mul(Polynomial(coeff_result), Polynomial({ bl }), modp);
-    Polynomial rem(at.coeff);
-    rem.prune();
+    
+    at.prune();
 
-    return { quo, rem };
+    return { quo, at };
 }
 
 

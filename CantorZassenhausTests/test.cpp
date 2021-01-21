@@ -77,3 +77,14 @@ TEST(Polynomial, mul1) {
 
     EXPECT_EQ(p3.to_string(), result);
 }
+
+TEST(Polynomial, mul2) {
+    Polynomial p1 = parse_polynomial("2x^57+1x^48+3x^1+4x^0");
+    Polynomial p2 = parse_polynomial("4x^2+1x^1+2x^0");
+
+    auto p3 = Polynomial::mul(p1, p2, 5);
+
+    std::string result = "3x^59+2x^58+4x^57+4x^50+x^49+2x^48+2x^3+4x^2+3";
+
+    EXPECT_EQ(p3.to_string(), result);
+}
