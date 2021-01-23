@@ -78,7 +78,7 @@ vector<Polynomial> equal_degree_factorization(Polynomial poly, int degree, mpz_c
 
     while (g.is_one() || g == poly) {
         int deg = poly.get_degree() - 1;
-        assert(deg > 0);
+        // assert(deg > 0);
         genpol = Polynomial::get_random_polynomial(deg, modp);
         auto gp = Polynomial::mod(genpol, poly, modp);
         // assert(gpa.first == Polynomial({}));
@@ -147,7 +147,7 @@ std::vector<std::pair<Polynomial, int>> factor(Polynomial poly, mpz_class modp) 
 	}
 
     std::chrono::steady_clock::time_point end = std::chrono::steady_clock::now();
-    std::cout << "Time difference = " << std::chrono::duration_cast<std::chrono::milliseconds>(end - begin).count() << "[ms]" << std::endl;
+    std::cout << "Computation time = " << std::chrono::duration_cast<std::chrono::milliseconds>(end - begin).count() << "[ms]" << std::endl;
 
 	return result;
 }

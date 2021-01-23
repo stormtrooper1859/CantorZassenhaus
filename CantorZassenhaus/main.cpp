@@ -21,7 +21,7 @@ using namespace std;
 
 
 // moved!
-int main() {
+int main1() {
     Polynomial p1 = Polynomial("1x^12+1x^11+2x^9+2x^8+2x^6+1x^5+2x^4+2x^3");
 
     auto rez = factor(p1, 3);
@@ -80,3 +80,19 @@ int main32() {
     return 0;
 }
 
+
+int main() {
+    std::string poly_string, module_string;
+
+    std::getline(std::cin, poly_string);
+    std::getline(std::cin, module_string);
+
+    Polynomial p1 = Polynomial(poly_string);
+
+    auto rez = factor(p1, mpz_class(module_string));
+    for (auto p : rez) {
+        cout << p.second << " " << p.first << "\n";
+    }
+
+    return 0;
+}

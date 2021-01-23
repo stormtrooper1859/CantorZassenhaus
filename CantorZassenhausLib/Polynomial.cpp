@@ -9,34 +9,55 @@
 
 using namespace std;
 
+#include <iostream>
 
 int64_t wtf = 0;
 
 
 Polynomial::Polynomial(std::string str)
 {
-    auto monoms_string = split_by(str, "+");
-    vector<pair<mpz_class, int>> monoms(monoms_string.size());
+    try {
+        auto monoms_string = split_by(str, "+");
+        vector<pair<mpz_class, int>> monoms(monoms_string.size());
 
-    for (size_t i = 0; i < monoms.size(); i++)
-    {
-        auto ss = split_by(monoms_string[i], "x^");
-        monoms[i] = { mpz_class(ss[0]), stoi(ss[1]) };
+        for (size_t i = 0; i < monoms.size(); i++)
+        {
+            auto ss = split_by(monoms_string[i], "x");
+
+            mpz_class coeff;
+            int pwr;
+
+            if (ss.size() == 1) {
+                pwr = 0;
+            } else {
+                if (ss[1] == "") {
+                    pwr = 1;
+                } else {
+                    pwr = stoi(ss[1].substr(1, ss[1].size()));
+                }
+            }
+
+            if (ss[0] == "") {
+                coeff = 1;
+            } else {
+                coeff = ss[0];
+            }
+            monoms[i] = { coeff, pwr };
+        }
+
+
+        int pwr = monoms[0].second;
+        vector<mpz_class> result(pwr + 1);
+
+        for (auto pr : monoms)
+        {
+            result[pr.second] = pr.first;
+        }
+
+        this->coeff = result;
+    } catch (...) {
+        cout << "Error during polynomial parse" << endl;
     }
-
-    int pwr = monoms[0].second;
-    vector<mpz_class> result(pwr + 1);
-
-    for (auto pr : monoms) {
-        result[pr.second] = pr.first;
-    }
-
-    this->coeff = result;
-}
-
-Polynomial parse_polynomial(std::string str)
-{
-    return Polynomial(str);
 }
 
 

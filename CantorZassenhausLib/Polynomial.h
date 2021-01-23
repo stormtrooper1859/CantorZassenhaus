@@ -68,9 +68,6 @@ public:
 
 std::ostream & operator<<(std::ostream & Str, Polynomial const & v);
 
-Polynomial parse_polynomial(std::string s);
-
-
 Polynomial gcd(const Polynomial& a, const Polynomial& b, mpz_class modp);
 
 Polynomial powmod(const Polynomial& a, mpz_class b, const Polynomial& mod, mpz_class modp);
