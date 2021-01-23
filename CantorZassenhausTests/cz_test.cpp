@@ -18,13 +18,13 @@ bool check_answer(std::vector<std::pair<Polynomial, int>> expected, std::vector<
 
 
 TEST(CantorZassenhaus, simple) {
-    Polynomial poly = Polynomial("1x^12+1x^11+2x^9+2x^8+2x^6+1x^5+2x^4+2x^3");
+    Polynomial poly = Polynomial("x^12+x^11+2x^9+2x^8+2x^6+x^5+2x^4+2x^3");
 
     std::vector<std::pair<Polynomial, int>> expected = {
-        {Polynomial("1x^2+1x^1+2x^0"), 1},
-        {Polynomial("1x^3+2x^1+1x^0"), 1},
-        {Polynomial("1x^2+1x^0"), 2},
-        {Polynomial("1x^1"), 3},
+        {Polynomial("x^2+x+2"), 1},
+        {Polynomial("x^3+2x+1"), 1},
+        {Polynomial("x^2+1"), 2},
+        {Polynomial("x"), 3},
     };
 
     auto result = factor(poly, 3);
@@ -34,12 +34,12 @@ TEST(CantorZassenhaus, simple) {
 
 
 TEST(CantorZassenhaus, simple_2) {
-    Polynomial poly = Polynomial("1x^11+1x^10+1x^9+1x^8+1x^6+1x^5+1x^0");
+    Polynomial poly = Polynomial("x^11+x^10+x^9+x^8+x^6+x^5+1");
 
     std::vector<std::pair<Polynomial, int>> expected = {
-        {Polynomial("1x^3+1x^1+1x^0"), 1},
-        {Polynomial("1x^2+1x^1+1x^0"), 1},
-        {Polynomial("1x^3+1x^2+1x^0"), 2},
+        {Polynomial("x^3+x^1+1"), 1},
+        {Polynomial("x^2+x^1+1"), 1},
+        {Polynomial("x^3+x^2+1"), 2},
     };
 
     auto result = factor(poly, 2);
@@ -49,11 +49,11 @@ TEST(CantorZassenhaus, simple_2) {
 
 
 TEST(CantorZassenhaus, equal_degree) {
-    Polynomial poly = Polynomial("1x^24+10x^23+32x^22+28x^21+13x^20+13x^19+17x^18+12x^17+29x^16+16x^15+13x^14+30x^13+31x^12+31x^11+2x^10+15x^9+5x^8+15x^7+3x^6+10x^5+18x^4+4x^3+6x^2+36x^1+19x^0");
+    Polynomial poly = Polynomial("x^24+10x^23+32x^22+28x^21+13x^20+13x^19+17x^18+12x^17+29x^16+16x^15+13x^14+30x^13+31x^12+31x^11+2x^10+15x^9+5x^8+15x^7+3x^6+10x^5+18x^4+4x^3+6x^2+36x+19");
 
     std::vector<std::pair<Polynomial, int>> expected = {
-        {Polynomial("1x^12+2x^11+30x^10+27x^9+23x^8+7x^7+4x^6+15x^5+8x^4+10x^3+16x^2+8x^1+15x^0"), 1},
-        {Polynomial("1x^12+8x^11+23x^10+11x^9+24x^8+7x^7+25x^6+12x^5+30x^4+16x^3+34x^2+6x^1+21x^0"), 1},
+        {Polynomial("x^12+2x^11+30x^10+27x^9+23x^8+7x^7+4x^6+15x^5+8x^4+10x^3+16x^2+8x+15"), 1},
+        {Polynomial("x^12+8x^11+23x^10+11x^9+24x^8+7x^7+25x^6+12x^5+30x^4+16x^3+34x^2+6x+21"), 1},
     };
 
     auto result = factor(poly, 37);
@@ -63,11 +63,11 @@ TEST(CantorZassenhaus, equal_degree) {
 
 
 TEST(CantorZassenhaus, equal_degree_2) {
-    Polynomial poly = Polynomial("1x^14+1x^10+1x^9+1x^8+1x^7+1x^6+1x^3+1x^2+1x^0");
+    Polynomial poly = Polynomial("x^14+x^10+x^9+x^8+x^7+x^6+x^3+x^2+1");
 
     std::vector<std::pair<Polynomial, int>> expected = {
-        {Polynomial("1x^7+1x^4+1x^0"), 1},
-        {Polynomial("1x^7+1x^4+1x^3+1x^2+1x^0"), 1},
+        {Polynomial("x^7+x^4+1"), 1},
+        {Polynomial("x^7+x^4+x^3+x^2+1"), 1},
     };
 
     auto result = factor(poly, 2);
@@ -77,22 +77,22 @@ TEST(CantorZassenhaus, equal_degree_2) {
 
 
 TEST(CantorZassenhaus, many_output_2) {
-    Polynomial poly = Polynomial("1x^63+1x^0");
+    Polynomial poly = Polynomial("x^63+1");
 
     std::vector<std::pair<Polynomial, int>> expected = {
-        {Polynomial("1x^1+1x^0"), 1},
-        {Polynomial("1x^2+1x^1+1x^0"), 1},
-        {Polynomial("1x^3+1x^2+1x^0"), 1},
-        {Polynomial("1x^3+1x^1+1x^0"), 1},
-        {Polynomial("1x^6+1x^4+1x^3+1x^1+1x^0"), 1},
-        {Polynomial("1x^6+1x^5+1x^0"), 1},
-        {Polynomial("1x^6+1x^5+1x^3+1x^2+1x^0"), 1},
-        {Polynomial("1x^6+1x^5+1x^4+1x^1+1x^0"), 1},
-        {Polynomial("1x^6+1x^4+1x^2+1x^1+1x^0"), 1},
-        {Polynomial("1x^6+1x^3+1x^0"), 1},
-        {Polynomial("1x^6+1x^1+1x^0"), 1},
-        {Polynomial("1x^6+1x^5+1x^4+1x^2+1x^0"), 1},
-        {Polynomial("1x^6+1x^5+1x^2+1x^1+1x^0"), 1},
+        {Polynomial("x+1"), 1},
+        {Polynomial("x^2+x+1"), 1},
+        {Polynomial("x^3+x^2+1"), 1},
+        {Polynomial("x^3+x+1"), 1},
+        {Polynomial("x^6+x^4+x^3+x+1"), 1},
+        {Polynomial("x^6+x^5+1"), 1},
+        {Polynomial("x^6+x^5+x^3+x^2+1"), 1},
+        {Polynomial("x^6+x^5+x^4+x+1"), 1},
+        {Polynomial("x^6+x^4+x^2+x+1"), 1},
+        {Polynomial("x^6+x^3+1"), 1},
+        {Polynomial("x^6+x+1"), 1},
+        {Polynomial("x^6+x^5+x^4+x^2+1"), 1},
+        {Polynomial("x^6+x^5+x^2+x+1"), 1},
     };
 
     auto result = factor(poly, 2);
