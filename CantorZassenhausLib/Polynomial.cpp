@@ -10,6 +10,7 @@
 
 using namespace std;
 
+int64_t wtf = 0;
 
 Polynomial::Polynomial(std::string str)
 {
@@ -168,9 +169,14 @@ Polynomial Polynomial::add(const Polynomial & a, const Polynomial & b, const mpz
     return p;
 }
 
+Polynomial::~Polynomial() {
+    wtf += this->coeff.size();
+}
 
 Polynomial Polynomial::mul(const Polynomial & a, const Polynomial & b, const mpz_class& modp)
 {
+    // wtf += a.coeff.size() * b.coeff.size();
+
     if (a.is_zero() || b.is_zero()) {
         return Polynomial({});
     }
@@ -362,7 +368,8 @@ long long poly_seed = 5843418L; //52s
 
 Polynomial Polynomial::get_random_polynomial(int max_degree, const mpz_class& modq)
 {
-    // std::mt19937 rng(std::chrono::steady_clock::now().time_since_epoch().count());
+    // poly_seed = std::chrono::steady_clock::now().time_since_epoch().count();
+    // std::mt19937 rng();
     cout << poly_seed << "\n";
     std::mt19937 rng(poly_seed);
 
