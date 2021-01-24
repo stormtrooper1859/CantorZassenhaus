@@ -40,11 +40,15 @@ int check_perf1() {
 }
 
 
-// prof - 303 sec; 579946 - created and destroyed polynomials
 int check_perf2() {
-    Polynomial p1 = Polynomial("x^312+x^217+x^46+1");
-
+    // Polynomial p1 = Polynomial("x^312+x^217+x^46+1");
+    // Polynomial p1 = Polynomial("x^156+x^113+x^26+1");
+    Polynomial p1 = Polynomial("x^78+x^55+x^14+1");
+   
     auto rez = factor(p1, 994813);
+    // auto rez = factor(p1, 17);
+    // auto rez = factor(p1, 421);
+    // auto rez = factor(p1, 991);
     for (auto p : rez) {
         cout << p.second << " " << p.first << "\n";
     }
@@ -71,10 +75,8 @@ int main2() {
 }
 
 int main() {
-    wtf = 0;
     //check_perf();
-    check_perf1();
-    //check_perf2();
+    //check_perf1();
+    check_perf2();
     //main2()
-    cout << "wtf " << wtf << "\n";
 }

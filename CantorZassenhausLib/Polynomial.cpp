@@ -10,8 +10,6 @@
 
 using namespace std;
 
-int64_t wtf = 0;
-
 Polynomial::Polynomial(std::string str)
 {
     try {
@@ -169,14 +167,9 @@ Polynomial Polynomial::add(const Polynomial & a, const Polynomial & b, const mpz
     return p;
 }
 
-Polynomial::~Polynomial() {
-    wtf += this->coeff.size();
-}
 
 Polynomial Polynomial::mul(const Polynomial & a, const Polynomial & b, const mpz_class& modp)
 {
-    // wtf += a.coeff.size() * b.coeff.size();
-
     if (a.is_zero() || b.is_zero()) {
         return Polynomial({});
     }
@@ -361,16 +354,9 @@ bool Polynomial::is_one() const
 }
 
 
-
-long long poly_seed = 5843418L; //52s
-// long long poly_seed = 5843259L; // 100s
-// long long poly_seed = 180264231L; // 140s
-
 Polynomial Polynomial::get_random_polynomial(int max_degree, const mpz_class& modq)
 {
-    // poly_seed = std::chrono::steady_clock::now().time_since_epoch().count();
-    // std::mt19937 rng();
-    cout << poly_seed << "\n";
+    long long poly_seed = std::chrono::steady_clock::now().time_since_epoch().count();
     std::mt19937 rng(poly_seed);
 
     uniform_int_distribution<int> dist(0, modq.get_si() - 1);
@@ -390,11 +376,5 @@ Polynomial Polynomial::get_random_polynomial(int max_degree, const mpz_class& mo
 
     result.prune();
 
-    poly_seed += dist_degree(rng) + 1;
-
     return result;
 }
-
-//5843259
-//5843373
-//5843418
