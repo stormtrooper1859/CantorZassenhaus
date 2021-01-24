@@ -53,7 +53,7 @@ int check_perf2() {
 
 
 
-int main() {
+int main2() {
     std::string poly_string, module_string;
 
     std::getline(std::cin, poly_string);
@@ -67,4 +67,11 @@ int main() {
     }
 
     return 0;
+}
+
+int main() {
+    //check_perf();
+    check_perf1();
+    //check_perf2();
+    //main2()
 }
