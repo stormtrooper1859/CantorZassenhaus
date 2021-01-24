@@ -6,7 +6,7 @@
 
 #include "Polynomial.h"
 
-std::vector<std::pair<Polynomial, int>> factor(Polynomial poly, mpz_class modp);
+std::vector<std::pair<Polynomial, int>> factor(const Polynomial& poly, const mpz_class& modp);
 
 // std::vector<std::pair<Polynomial, int>> square_free_decomposition(Polynomial poly, mpz_class modp);
 // std::vector<std::pair<Polynomial, int>> distinct_degree_factorization(Polynomial poly, mpz_class modp);

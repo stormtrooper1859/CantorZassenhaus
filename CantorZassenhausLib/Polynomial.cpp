@@ -104,7 +104,7 @@ std::string Polynomial::to_string(std::string default_variable_name) const
 }
 
 
-Polynomial Polynomial::diff(const mpz_class modp)
+Polynomial Polynomial::diff(const mpz_class& modp)
 {
     vector<mpz_class> v(this->get_degree());
 
@@ -139,7 +139,7 @@ std::ostream& operator<<(std::ostream& strm, const Polynomial& poly) {
 }
 
 
-Polynomial Polynomial::add(const Polynomial & a, const Polynomial & b, const mpz_class modp)
+Polynomial Polynomial::add(const Polynomial & a, const Polynomial & b, const mpz_class& modp)
 {
     if (a.is_zero()) {
         return b;
@@ -169,7 +169,7 @@ Polynomial Polynomial::add(const Polynomial & a, const Polynomial & b, const mpz
 }
 
 
-Polynomial Polynomial::mul(const Polynomial & a, const Polynomial & b, const mpz_class modp)
+Polynomial Polynomial::mul(const Polynomial & a, const Polynomial & b, const mpz_class& modp)
 {
     if (a.is_zero() || b.is_zero()) {
         return Polynomial({});
@@ -188,7 +188,7 @@ Polynomial Polynomial::mul(const Polynomial & a, const Polynomial & b, const mpz
 
 
 
-Polynomial Polynomial::sub(const Polynomial & a, const Polynomial & b, const mpz_class modp)
+Polynomial Polynomial::sub(const Polynomial & a, const Polynomial & b, const mpz_class& modp)
 {
     vector<mpz_class> v = b.coeff;
 
@@ -200,7 +200,7 @@ Polynomial Polynomial::sub(const Polynomial & a, const Polynomial & b, const mpz
 }
 
 
-std::pair< Polynomial, Polynomial> Polynomial::div_internal(const Polynomial & a, const Polynomial & b, const mpz_class modp)
+std::pair< Polynomial, Polynomial> Polynomial::div_internal(const Polynomial & a, const Polynomial & b, const mpz_class& modp)
 {
     mpz_class bl = b.coeff.back();
     Polynomial b2 = b.normalize(modp);
@@ -234,13 +234,13 @@ std::pair< Polynomial, Polynomial> Polynomial::div_internal(const Polynomial & a
 }
 
 
-Polynomial Polynomial::div(const Polynomial & a, const Polynomial & b, const mpz_class modp)
+Polynomial Polynomial::div(const Polynomial & a, const Polynomial & b, const mpz_class& modp)
 {
     return Polynomial::div_internal(a, b, modp).first;
 }
 
 
-Polynomial Polynomial::mod(const Polynomial & a, const Polynomial & b, const mpz_class modp)
+Polynomial Polynomial::mod(const Polynomial & a, const Polynomial & b, const mpz_class& modp)
 {
     return Polynomial::div_internal(a, b, modp).second;
 }
@@ -281,7 +281,7 @@ bool operator< (const Polynomial &poly1, const Polynomial &poly2) {
 }
 
 
-Polynomial gcd(const Polynomial& a1, const Polynomial& b1, mpz_class modp)
+Polynomial gcd(const Polynomial& a1, const Polynomial& b1, const mpz_class& modp)
 {
     if (a1.is_zero()) {
         return b1;
@@ -303,7 +303,7 @@ Polynomial gcd(const Polynomial& a1, const Polynomial& b1, mpz_class modp)
     return a.normalize(modp);
 }
 
-Polynomial powmod(const Polynomial& a, mpz_class b, const Polynomial& mod, mpz_class modp)
+Polynomial powmod(const Polynomial& a, mpz_class b, const Polynomial& mod, const mpz_class& modp)
 {
     mpz_class power = b;
     Polynomial rez = Polynomial::get_one();
@@ -321,14 +321,14 @@ Polynomial powmod(const Polynomial& a, mpz_class b, const Polynomial& mod, mpz_c
 }
 
 
-mpz_class inversed_in_ring(mpz_class a, mpz_class modp) {
+mpz_class inversed_in_ring(mpz_class& a, const mpz_class& modp) {
     mpz_class rezult;
     mpz_invert(rezult.get_mpz_t(), a.get_mpz_t(), modp.get_mpz_t());
     return rezult;
 }
 
 
-Polynomial Polynomial::normalize(mpz_class modp) const
+Polynomial Polynomial::normalize(const mpz_class& modp) const
 {
     mpz_class bl = this->coeff.back();
     mpz_class ib = inversed_in_ring(bl, modp);
@@ -345,19 +345,26 @@ Polynomial Polynomial::normalize(mpz_class modp) const
 
 bool Polynomial::is_zero() const
 {
-    return *this == Polynomial({});
+    return this->coeff.size() == 0;
 }
 
 
 bool Polynomial::is_one() const
 {
-    return *this == Polynomial({ mpz_class(1) });
+    return this->coeff.size() == 1 && this->coeff[0] == 1;
 }
 
 
-Polynomial Polynomial::get_random_polynomial(int max_degree, mpz_class modq)
+
+long long poly_seed = 5843418L; //52s
+// long long poly_seed = 5843259L; // 100s
+// long long poly_seed = 180264231L; // 140s
+
+Polynomial Polynomial::get_random_polynomial(int max_degree, const mpz_class& modq)
 {
-    std::mt19937 rng(std::chrono::steady_clock::now().time_since_epoch().count());
+    // std::mt19937 rng(std::chrono::steady_clock::now().time_since_epoch().count());
+    cout << poly_seed << "\n";
+    std::mt19937 rng(poly_seed);
 
     uniform_int_distribution<int> dist(0, modq.get_si() - 1);
     uniform_int_distribution<int> dist_degree(0, max_degree - 1);
@@ -376,5 +383,11 @@ Polynomial Polynomial::get_random_polynomial(int max_degree, mpz_class modq)
 
     result.prune();
 
+    poly_seed += dist_degree(rng) + 1;
+
     return result;
 }
+
+//5843259
+//5843373
+//5843418

@@ -8,7 +8,7 @@
 using namespace std;
 
 
-std::vector<std::pair<Polynomial, int>> square_free_decomposition(Polynomial poly, mpz_class modp) {
+std::vector<std::pair<Polynomial, int>> square_free_decomposition(const Polynomial& poly, const mpz_class& modp) {
     std::vector<std::pair<Polynomial, int>> result;
 
     Polynomial a = poly;
@@ -41,7 +41,7 @@ std::vector<std::pair<Polynomial, int>> square_free_decomposition(Polynomial pol
 
 
 
-vector<pair<Polynomial, int>> distinct_degree_factorization(Polynomial poly, mpz_class modp) {
+vector<pair<Polynomial, int>> distinct_degree_factorization(const Polynomial& poly, const mpz_class& modp) {
     vector<pair<Polynomial, int>> result;
 
     Polynomial h("1x^1");
@@ -65,7 +65,7 @@ vector<pair<Polynomial, int>> distinct_degree_factorization(Polynomial poly, mpz
 
 
 
-vector<Polynomial> equal_degree_factorization(Polynomial poly, int degree, mpz_class modp) {
+vector<Polynomial> equal_degree_factorization(const Polynomial& poly, int degree, const mpz_class& modp) {
     if (poly.get_degree() == degree) {
         return vector<Polynomial>({ poly });
     }
@@ -113,7 +113,7 @@ vector<Polynomial> equal_degree_factorization(Polynomial poly, int degree, mpz_c
 }
 
 
-vector<Polynomial> factor_square_free(Polynomial poly, mpz_class modp) {
+vector<Polynomial> factor_square_free(const Polynomial& poly, const mpz_class& modp) {
     vector<Polynomial> result;
 
     auto distDeg = distinct_degree_factorization(poly, modp);
@@ -127,7 +127,7 @@ vector<Polynomial> factor_square_free(Polynomial poly, mpz_class modp) {
 }
 
 
-std::vector<std::pair<Polynomial, int>> factor(Polynomial poly, mpz_class modp) {
+std::vector<std::pair<Polynomial, int>> factor(const Polynomial& poly, const mpz_class& modp) {
     std::chrono::steady_clock::time_point begin = std::chrono::steady_clock::now();
 
     std::vector<std::pair<Polynomial, int>> result;
