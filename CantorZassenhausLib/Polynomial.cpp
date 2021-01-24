@@ -4,14 +4,11 @@
 #include <algorithm>
 #include <chrono>
 #include <random>
+#include <iostream>
 
 #include "Utils.h"
 
 using namespace std;
-
-#include <iostream>
-
-int64_t wtf = 0;
 
 
 Polynomial::Polynomial(std::string str)
@@ -123,8 +120,6 @@ Polynomial Polynomial::diff(const mpz_class modp)
 }
 
 
-
-
 Polynomial Polynomial::zip(const int n) const
 {
     vector<mpz_class> v(this->get_degree() / n + 1);
@@ -144,17 +139,12 @@ std::ostream& operator<<(std::ostream& strm, const Polynomial& poly) {
 }
 
 
-
-
-
-
-
 Polynomial Polynomial::add(const Polynomial & a, const Polynomial & b, const mpz_class modp)
 {
-    if (a == Polynomial({})) {
+    if (a.is_zero()) {
         return b;
     }
-    if (b == Polynomial({})) {
+    if (b.is_zero()) {
         return a;
     }
 
@@ -179,115 +169,22 @@ Polynomial Polynomial::add(const Polynomial & a, const Polynomial & b, const mpz
 }
 
 
-//Polynomial Polynomial::mul(const Polynomial & a, const Polynomial & b, const mpz_class modp)
-//{
-//    if (a.is_zero() || b.is_zero()) {
-//        return Polynomial({});
-//    }
-//
-//    std::vector<mpz_class> v(a.get_degree() + b.get_degree() + 1);
-//    
-//    for (int i = 0; i <= a.get_degree(); ++i) {
-//        for (int j = 0; j <= b.get_degree(); ++j) {
-//            v[i + j] = (v[i + j] + a.coeff[i] * b.coeff[j]) % modp;
-//        }
-//    }
-//
-//    return Polynomial(v);
-//}
+Polynomial Polynomial::mul(const Polynomial & a, const Polynomial & b, const mpz_class modp)
+{
+    if (a.is_zero() || b.is_zero()) {
+        return Polynomial({});
+    }
 
+    std::vector<mpz_class> v(a.get_degree() + b.get_degree() + 1);
 
-const int len_f_naive = 42;
-
-
-vector<mpz_class> naive_mul(const vector<mpz_class>& x, const vector<mpz_class>& y, mpz_class modp) {
-    auto len = x.size();
-    vector<mpz_class> res(2 * len);
-
-    for (auto i = 0; i < len; ++i) {
-        for (auto j = 0; j < len; ++j) {
-            res[i + j] = (res[i + j] + x[i] * y[j]) % modp;
+    for (int i = 0; i <= a.get_degree(); ++i) {
+        for (int j = 0; j <= b.get_degree(); ++j) {
+            v[i + j] = (v[i + j] + a.coeff[i] * b.coeff[j] % modp + modp) % modp;
         }
     }
 
-    return res;
+    return Polynomial(v);
 }
-
-vector<mpz_class> karatsuba_mul(const vector<mpz_class>& x, const vector<mpz_class>& y, mpz_class modp) {
-    auto len = x.size();
-    vector<mpz_class> res(2 * len);
-
-    if (len <= len_f_naive) {
-        return naive_mul(x, y, modp);
-    }
-
-    auto k = len / 2;
-
-    vector<mpz_class> Xr{ x.begin(), x.begin() + k };
-    vector<mpz_class> Xl{ x.begin() + k, x.end() };
-    vector<mpz_class> Yr{ y.begin(), y.begin() + k };
-    vector<mpz_class> Yl{ y.begin() + k, y.end() };
-
-    vector<mpz_class> P1 = karatsuba_mul(Xl, Yl, modp);
-    vector<mpz_class> P2 = karatsuba_mul(Xr, Yr, modp);
-
-    vector<mpz_class> Xlr(k);
-    vector<mpz_class> Ylr(k);
-
-    for (int i = 0; i < k; ++i) {
-        Xlr[i] = Xl[i] + Xr[i];
-        Ylr[i] = Yl[i] + Yr[i];
-    }
-
-    vector<mpz_class> P3 = karatsuba_mul(Xlr, Ylr, modp);
-
-    for (int i = 0; i < len; ++i) {
-        P3[i] = (P3[i] - (P2[i] + P1[i]) + modp) % modp;
-    }
-
-    for (int i = 0; i < len; ++i) {
-        res[i] = P2[i];
-    }
-
-    for (int i = len; i < 2 * len; ++i) {
-        res[i] = P1[i - len];
-    }
-
-    for (int i = k; i < len + k; ++i) {
-        res[i] = (res[i] + P3[i - k]) % modp;
-        // TODO speed up by if
-    }
-
-    return res;
-}
-
-
-Polynomial Polynomial::mul(const Polynomial & a, const Polynomial & b, const mpz_class modp)
-{
-    vector<mpz_class> va = a.coeff;
-    vector<mpz_class> vb = b.coeff;
-
-    int mx = max(va.size(), vb.size());
-    int rz = (mx & !(mx - 1)) == mx ? 0 : 1;
-    while (mx > 0) {
-        rz *= 2;
-        mx /= 2;
-    }
-
-    for (int i = va.size(); i < rz; i++) {
-        va.push_back(0);
-    }
-    for (int i = vb.size(); i < rz; i++) {
-        vb.push_back(0);
-    }
-    
-    auto vc = karatsuba_mul(va, vb, modp);
-    Polynomial rez(vc);
-    rez.prune();
-
-    return rez;
-}
-
 
 
 
@@ -301,16 +198,6 @@ Polynomial Polynomial::sub(const Polynomial & a, const Polynomial & b, const mpz
 
     return add(a, Polynomial(v), modp);
 }
-
-
-mpz_class inversed(mpz_class a, mpz_class modp) {
-    mpz_class rezult;
-    mpz_invert(rezult.get_mpz_t(), a.get_mpz_t(), modp.get_mpz_t());
-    return rezult;
-}
-
-
-
 
 
 std::pair< Polynomial, Polynomial> Polynomial::div_internal(const Polynomial & a, const Polynomial & b, const mpz_class modp)
@@ -366,10 +253,12 @@ Polynomial Polynomial::get_one()
     return Polynomial({ mpz_class(1) });
 }
 
+
 bool operator==(const Polynomial & poly1, const Polynomial & poly2)
 {
     return poly1.coeff == poly2.coeff;
 }
+
 
 bool operator!=(const Polynomial & poly1, const Polynomial & poly2)
 {
@@ -390,7 +279,6 @@ bool operator< (const Polynomial &poly1, const Polynomial &poly2) {
 
     return poly1.coeff.size() < poly2.coeff.size();
 }
-
 
 
 Polynomial gcd(const Polynomial& a1, const Polynomial& b1, mpz_class modp)
@@ -418,8 +306,6 @@ Polynomial gcd(const Polynomial& a1, const Polynomial& b1, mpz_class modp)
 Polynomial powmod(const Polynomial& a, mpz_class b, const Polynomial& mod, mpz_class modp)
 {
     mpz_class power = b;
-
-    // Polynomial rez({ 1 });
     Polynomial rez = Polynomial::get_one();
     Polynomial aa = a;
     while (power > 0) {
@@ -435,10 +321,17 @@ Polynomial powmod(const Polynomial& a, mpz_class b, const Polynomial& mod, mpz_c
 }
 
 
+mpz_class inversed_in_ring(mpz_class a, mpz_class modp) {
+    mpz_class rezult;
+    mpz_invert(rezult.get_mpz_t(), a.get_mpz_t(), modp.get_mpz_t());
+    return rezult;
+}
+
+
 Polynomial Polynomial::normalize(mpz_class modp) const
 {
     mpz_class bl = this->coeff.back();
-    mpz_class ib = inversed(bl, modp);
+    mpz_class ib = inversed_in_ring(bl, modp);
 
     vector<mpz_class> v = this->coeff;
 
@@ -446,30 +339,20 @@ Polynomial Polynomial::normalize(mpz_class modp) const
         v[i] = (v[i] * ib) % modp;
     }
 
-    // return mul(*this, Polynomial({ ib }), modp);
     return Polynomial(v);
 }
+
 
 bool Polynomial::is_zero() const
 {
     return *this == Polynomial({});
 }
 
+
 bool Polynomial::is_one() const
 {
     return *this == Polynomial({ mpz_class(1) });
 }
-
-Polynomial::~Polynomial()
-{
-    wtf += 1;
-}
-
-
-
-
-
-
 
 
 Polynomial Polynomial::get_random_polynomial(int max_degree, mpz_class modq)

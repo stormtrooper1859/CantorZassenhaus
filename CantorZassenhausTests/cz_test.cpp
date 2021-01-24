@@ -99,3 +99,18 @@ TEST(CantorZassenhaus, many_output_2) {
 
     EXPECT_TRUE(check_answer(expected, result));
 }
+
+
+TEST(CantorZassenhaus, large_mod) {
+    Polynomial poly = Polynomial("x^12+x^6+2x^3+12");
+
+    std::vector<std::pair<Polynomial, int>> expected = {
+        {Polynomial("x^3+388318"), 1},
+        {Polynomial("x^3+639226"), 1},
+        {Polynomial("x^6+962082x^3+693027"), 1},
+    };
+
+    auto result = factor(poly, 994813);
+
+    EXPECT_TRUE(check_answer(expected, result));
+}

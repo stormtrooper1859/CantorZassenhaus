@@ -2,7 +2,6 @@
 
 #include <algorithm>
 #include <chrono>
-#include <cassert>
 #include <iostream>
 
 
@@ -78,11 +77,8 @@ vector<Polynomial> equal_degree_factorization(Polynomial poly, int degree, mpz_c
 
     while (g.is_one() || g == poly) {
         int deg = poly.get_degree() - 1;
-        // assert(deg > 0);
         genpol = Polynomial::get_random_polynomial(deg, modp);
         auto gp = Polynomial::mod(genpol, poly, modp);
-        // assert(gpa.first == Polynomial({}));
-        // auto gp = gpa.second;
         g = gcd(gp, poly, modp);
         if (g.is_one()) {
             Polynomial h;

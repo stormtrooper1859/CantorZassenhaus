@@ -8,7 +8,6 @@
 
 #include "mpirxx.h"
 
-extern int64_t wtf;
 
 class Polynomial
 {
@@ -61,8 +60,6 @@ public:
     friend bool operator== (const Polynomial &poly1, const Polynomial &poly2);
     friend bool operator< (const Polynomial &poly1, const Polynomial &poly2);
     friend bool operator!= (const Polynomial &poly1, const Polynomial &poly2);
-
-    ~Polynomial();
 };
 
 
